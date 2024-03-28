@@ -5,8 +5,6 @@
 
 library(readr)
 
-setwd("~/Desktop/Manucripts/EcosystemEngineering_Biodiversity/Data")
-
 load('Phanerozoic_marine_cleaned_binned.RData')
 all_data <- marine_cleaned_binned
 formation_cleaning <- read.csv('formation_sorting.csv')
