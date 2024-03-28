@@ -9,7 +9,7 @@ library(readr)
 setwd("~/Desktop/Manucripts/EcosystemEngineering_Biodiversity/Data")
 
 load('Phanerozoic_marine_cleaned_binned.RData')
-load('Reef_Ecosystem_Engineers_29-11-2023.RData')
+load('Reef_Ecosystem_Engineers.RData')
 all_data <- marine_cleaned_binned
 formation_cleaning <- read.csv('formation_sorting.csv')
 
