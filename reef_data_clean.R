@@ -1,12 +1,7 @@
 #Author: AT Cribb
-#Created: 27 November 2023
-#Last edited:
-
 #Summary: create a reef builder dataset from the cleaned and binned marine phanerozoic data
 
 #===================================================================#
-setwd("~/Desktop/Manucripts/Palass_ecosystemengineering")
-
 #=== load data ===#
 load('Data/Phanerozoic_marine_cleaned_binned.RData')
 all_data <- marine_cleaned_binned
