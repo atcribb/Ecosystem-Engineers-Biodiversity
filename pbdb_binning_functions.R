@@ -5,8 +5,6 @@
 #Created: 20 September 2023
 #Last edited: 1 November 2023
 
-setwd("~/Desktop/Manucripts/Phanerozoic_climate_tracking/Functions")
-
 library(divDyn)
 library(dplyr)
 
