@@ -13,11 +13,11 @@ form.subsampling <- 'occurrences' #subsampling - 20 occurrences per formation
 library(divDyn)
 
 #===== Data input ======#
-load('Data/Phanerozoic_clean_final.RData') #phanerozoic PBDB data (date accessed: 1 November 2023)
+load('Phanerozoic_clean_final.RData') #phanerozoic PBDB data (date accessed: 1 November 2023)
 all_data <- subset(all_data, !(is.na(formation))) #remove data without formation assignments
 all_data <- subset(all_data, !(formation=='')) #remove data without formation assignments
 
-load('Data/Bioturbators_data.RData')
+load('Bioturbators_data.RData')
 ecoeng_genera <- unique(bioturbators_data$genus) #get each ecosystem engineering genus name
 ecoeng_formations <- unique(bioturbators_data$formation) #get each formation name containing ecosystem engineers
 
