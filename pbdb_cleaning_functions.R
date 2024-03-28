@@ -1,4 +1,4 @@
-#Functions to clean marine and terrestrial pbdb data
+#Functions to clean marine pbdb data
 #Author: Alison Cribb (A.T.Cribb@soton.ac.uk)
 #Created: 20 September 2023
 #Last edited: 1 November 2023
@@ -7,24 +7,10 @@
 #======== PBDB URL BOX DO NOT TOUCH =========#
 #Marine:
 #data1.2/occs/list.csv?idqual=certain&pres=regular&interval=Cambrian,Holocene&envtype=marine&pgm=gplates,scotese,seton&show=full,img,lith,env
-
-#Terrestrial:
-#data1.2/occs/list.csv?idqual=certain&pres=regular&interval=Cambrian,Holocene&envtype=terr&pgm=gplates,scotese,seton&show=full,img,lith,env
-#===========================================#
-
+#=============================================#
 
 library(divDyn)
 library(dplyr)
-
-setwd("~/Desktop/Manucripts/Phanerozoic_climate_tracking/Functions")
-
-#======== MARINE CLEANING FUNCTION ========#
-####===========================  CHECK YOUR DATA BEFORE YOU BEGIN  ===========================######
-#     For things to go smoothly, when you downloaded your PBDB data did you....                    #
-#          - select "any marine" in Select by geologic context>Environment ?                       #
-#          - select "regular taxa only" in Select by taxonomy>Preservation ?                       #
-#          - deselect "include metadata at the beginning of the output" in Choose output options ? #
-#==================================================================================================#
 
 clean_marine <- function(data){
   
@@ -159,80 +145,6 @@ clean_marine <- function(data){
 
   
 }
-
-# #==== test ====#
-# load('test_data.RData')
-# marine_data <- clean_marine(test.data)
-
-
-
-
-#======== TERRESTRIAL CLEANING FUNCTION ========#
-####===========================  CHECK YOUR DATA BEFORE YOU BEGIN  ===========================######
-#     For things to go smoothly, when you downloaded your PBDB data did you....                    #
-#          - select "terrestrial" in Select by geologic context>Environment ?                      #
-#          - select "regular taxa only" in Select by taxonomy>Preservation ?                       #
-#          - deselect "include metadata at the beginning of the output" in Choose output options ? #
-#==================================================================================================#
-
-#make sure trace_removals and egg_removals .RData files are loaded (these are from E. Dunne)
-load('trace_removal_terms.RData')
-load('egg_removal_terms.RData')
-load('marine_removal_terms.RData')
-
-#get marine genera from your clean marine dataset
-#marine_genus <- unique(marine_data$genus)
-
-clean_terrestrial <- function(data){
-  
-  #Following Cribb, Formoso et al. (2023) and Emma Dunne (github.com/emmadunne/pbdb_clean)
-  
-  #==== Taxonomic Filtering =====#
-  #omit occurrences not identified to genus level
-  data <- subset(data, accepted_rank %in% c('genus', 'species'))
-  data <- data[data$genus!='',]
-  
-  #omit plants, insects, microbes, and meiofauna
-  terrestrial.phyla <- c('Chordata') #for future, add in Arthropoda and Mollusca for insects and inverts
-  data <- subset(data, phylum %in% terrestrial.phyla)
-  
-  omit.fishes <- c('Actinopteri', 'Chondrichthyes', 'Osteichthyes')
-  data <- subset(data, !(class %in% omit.fishes))
-  
-  #omit occurrences attributed to trace fossils, eggs, marine taxa, and wastebasket taxa (from Emma Dunne)
-  wastebasket_removals <- c('Crocodylus', 'Alligator', 'Testudo', 'Lacerta', 'Fenestrosaurus', 'Ovoraptor', 'Ornithoides', 'Placodermi') #remove wastebasket taxa to improve taxonomic resolution
-  removal.terms <- c(trace_removals, egg_removals, wastebasket_removals) #marine_removals
-  data <- subset(data, !(class %in% removal.terms))
-  data <- subset(data, !(order %in% removal.terms))
-  data <- subset(data, !(family %in% removal.terms))
-  data <- subset(data, !(genus %in% removal.terms))
-  
-  #omit marine genear that end up in the terrestrial dataset
-  #data <- subset(data, !(genus %in% marine_genus))
-  
-  #omit any lingering trace fossils 
-  data <- subset(data, !(pres_mode=='trace'))
-  
-  #omit iffy taxonomic assignments to resolve taxonomic resolution
-  data <- data %>% filter(!grepl("cf\\.|aff\\.|\\?|ex\\. gr\\.|sensu lato|informal|\\\"", identified_name))
-  
-  #===== Environmental filtering =====#
-  omit.environments <- c('basinal (carbonate)',             #remove environments least likely to be impacted by bloat and float 
-                         'basinal (siliceous)',
-                         'basinal (siliciclastic)',
-                         'carbonate indet.',
-                         'deep-water indet.', 
-                         'marine indet.',
-                         'open shallow subtidal', 
-                         'perireef or subreef', 'peritidal', 'reef, buildup or bioherm', 
-                         'shoreface', 'slope', 'slope/ramp reef', 'transition zone/lower'
-                         )  
-  data <- subset(data, !(environment %in% omit.environments))
-  
-  return(data)
-  
-}
-
 
 
 
