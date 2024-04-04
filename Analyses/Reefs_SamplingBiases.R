@@ -18,7 +18,66 @@ library(egg)
 library(deeptime)
 library(fields) #using qsregs for quantile spline regression
 
-#===== data input ======
+#==== assess sampling biases ====#
+load('Phanerozoic_clean_final.RData') #phanerozoic PBDB data (date accessed: 1 November 2023)
+all_data <- subset(all_data, !(is.na(formation))) #remove data without formation assignments
+all_data <- subset(all_data, !(formation=='')) #remove data without formation assignments
+
+load('Reef_Ecosystem_Engineers_final.RData')
+all_reef_builders <- subset(all_reef_builders, !(is.na(formation))) #remove data without formation assignments
+all_reef_builders <- subset(all_reef_builders, !(formation=='')) #remove data without formation assignments
+#get reef fossil data 
+ecoeng_formations <- unique(all_reef_builders$formation) #formations containing reef builders 
+ecoeng_genera <- unique(all_reef_builders$genus) #reef-builder genera 
+
+#Get average number of occurrences per formation for each stage
+variables <- c('stage', 'n_EEforms', 'occs_EEforms', 'n_nonEEforms', 'occs_nonEEforms')
+occsperform <- as.data.frame(matrix(NA, nrow=length(stage_names), ncol=length(variables)))
+colnames(occsperform) <- variables
+
+for(i in 1:nrow(occsperform)){
+
+  this.stage <- stage_names[i]
+  occsperform$stage[i] <- this.stage
+
+  this.stage.data <- subset(all_data, stage==this.stage)
+
+  this.stage.data_present <- subset(this.stage.data, formation %in% ecoeng_formations)
+  this.stage.data_absent <- subset(this.stage.data, !(formation %in% ecoeng_formations))
+
+  occsperform$n_EEforms[i] <- length(unique(this.stage.data_present$formation))
+  occsperform$n_nonEEforms[i] <- length(unique(this.stage.data_absent$formation))
+
+  occsperform$occs_EEforms[i] <- mean(as.data.frame(table(this.stage.data_present$formation))$Freq)
+  occsperform$occs_nonEEforms[i] <- mean(as.data.frame(table(this.stage.data_absent$formation))$Freq)
+
+}
+
+#and same for avg number of collections per formation in each stage
+variables <- c('stage', 'n_EEforms', 'colls_EEforms', 'n_nonEEforms', 'colls_nonEEforms')
+collsperform <- as.data.frame(matrix(NA, nrow=length(stage_names), ncol=length(variables)))
+colnames(collsperform) <- variables
+
+for(i in 1:nrow(collsperform)){
+
+  this.stage <- stage_names[i]
+  collsperform$stage[i] <- this.stage
+
+  this.stage.data <- subset(all_data, stage==this.stage)
+
+  this.stage.data_present <- subset(this.stage.data, formation %in% ecoeng_formations)
+  this.stage.data_absent <- subset(this.stage.data, !(formation %in% ecoeng_formations))
+
+  collsperform$n_EEforms[i] <- length(unique(this.stage.data_present$formation))
+  collsperform$n_nonEEforms[i] <- length(unique(this.stage.data_absent$formation))
+
+  collsperform$colls_EEforms[i] <- mean(as.data.frame(table(this.stage.data_present$collection_no))$Freq)
+  collsperform$colls_nonEEforms[i] <- mean(as.data.frame(table(this.stage.data_absent$collection_no))$Freq)
+}
+
+
+
+#===== output data input ======
 
 load('effectsizes_reefs_collsub.RData')
 colls.form.sub_df <- reefs_collsub_results_df
@@ -26,12 +85,6 @@ load('effectsizes_reefs_occsub.RData')
 occs.form.sub_df <- reefs_occsub_results_df
 load('ffectsizes_reefs_noformsub.RData')
 no.form.sub_df <- reefs_noformsub_results_df
-
-#Load in from /Output
-load('simulated_effectsizes_reefs_collections_20241003.RData')
-sim.colls_df <- reefs_effort_colls_results
-load('simulated_effectsizes_reefs_occurrences_20241003.RData')
-sim.occs_df <- reefs_effort_occs_results
 
 colls.form.sub_df$sampling_difference_occs <- sim.occs_df$sampling_difference
 occs.form.sub_df$sampling_difference_occs <- sim.occs_df$sampling_difference
