@@ -20,13 +20,14 @@ library(fields) #using qsregs for quantile spline regression
 
 #===== data input ======
 
-load('effectsizes_reefs_collsub_20242803.RData')
+load('effectsizes_reefs_collsub.RData')
 colls.form.sub_df <- reefs_collsub_results_df
-load('effectsizes_reefs_occsub_20242803.RData')
+load('effectsizes_reefs_occsub.RData')
 occs.form.sub_df <- reefs_occsub_results_df
-load('ffectsizes_reefs_noformsub_20242803.RData')
+load('ffectsizes_reefs_noformsub.RData')
 no.form.sub_df <- reefs_noformsub_results_df
 
+#Load in from /Output
 load('simulated_effectsizes_reefs_collections_20241003.RData')
 sim.colls_df <- reefs_effort_colls_results
 load('simulated_effectsizes_reefs_occurrences_20241003.RData')
