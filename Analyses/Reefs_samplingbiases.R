@@ -85,8 +85,6 @@ subsamp_richness <- ggplot(data=subset(compare_subsampling, !(is.na(HedgesG_genr
     legend.position=c(0.85, 0.9),
     plot.title=element_text(hjust=0.5))
 subsamp_richness
-ggsave('Output/Figures/Supplemental/Reefs_CompareSubsampling_Richness.pdf', subsamp_richness,
-       width=8, height=5)
 
 subsamp_H <- ggplot(data=subset(compare_subsampling, !(is.na(HedgesG_H)))) +
   geom_hline(yintercept=c(-0.2,0.2), linetype='longdash', linewidth=0.5, color='gray70') +
@@ -115,8 +113,6 @@ subsamp_H <- ggplot(data=subset(compare_subsampling, !(is.na(HedgesG_H)))) +
     legend.position=c(0.85, 0.9),
     plot.title=element_text(hjust=0.5))
 subsamp_H
-ggsave('Output/Figures/Supplemental/Reefs_CompareSubsampling_ShannonsH.pdf', subsamp_H,
-       width=8, height=5)
 
 subsamp_dom <- ggplot(data=subset(compare_subsampling, !(is.na(HedgesG_Dominance)))) +
   geom_hline(yintercept=c(-0.2,0.2), linetype='longdash', linewidth=0.5, color='gray70') +
@@ -145,9 +141,6 @@ subsamp_dom <- ggplot(data=subset(compare_subsampling, !(is.na(HedgesG_Dominance
     legend.position=c(0.85, 0.9),
     plot.title=element_text(hjust=0.5))
 subsamp_dom
-ggsave('Output/Figures/Supplemental/Reefs_CompareSubsampling_Dominance.pdf', subsamp_dom,
-       width=8, height=5)
-
 
 #1b - effect sizes versus sampling differences
 #1b.i. AIC tests - find lowest between models (best fit), and then highest between subsampling methods (worst fit)
