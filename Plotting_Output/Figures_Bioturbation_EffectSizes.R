@@ -4,9 +4,6 @@
 #Last edit notes:
 #Summary: Output plots for bioturbation effect sizes:
 
-
-setwd("~/Desktop/Manucripts/EcosystemEngineering_Biodiversity")
-
 #==== load pacakges ====#
 library(divDyn)
 data(stages)
@@ -97,21 +94,8 @@ effectsize_richness_plot <- ggplot(data=subset(results_df, !is.na(HedgesG_genric
     legend.title=element_blank(),
     plot.title=element_text(hjust=0.5))
 effectsize_richness_plot  
-ggsave('Output/Figures/Bioturbation_HedgesG_Richness.pdf', effectsize_richness_plot, 
-       height=5, width=11)  
 
 full_richness_fig <- ggarrange(compare_richness_plot, effectsize_richness_plot, ncol=1)
-ggsave('Output/Figures/Bioturbation_EffectSize_Richness.pdf', full_richness_fig, height=8, width=8)
-
-
-hedgesg_visual_richness <- ggplot(data=results_df) +
-  geom_abline(slope=1, intercept=0, linetype='longdash') +
-  geom_point(aes(x=M1_genrich, y=M2_genrich, fill=abs(HedgesG_genrich)), shape=21, size=3) +
-  scale_x_continuous( 'Richness: EEs present') +
-  scale_y_continuous('Richness: EEs absent') +
-  scale_fill_distiller(palette='PuRd', direction=1) +
-  theme_classic()
-hedgesg_visual_richness  
 
 #Shannon's Diversity
 #restructure M1 vs M2 data
@@ -146,7 +130,6 @@ compare_H_plot <- ggplot(data=compare_H) +
     legend.title=element_blank(),
     plot.title=element_text(hjust=0.5))
 compare_H_plot  
-ggsave('Bioturbation_H_compare.pdf', plot=compare_H_plot, width=7, height=4)
 
 results_df$H_significance <- rep(NA, nrow(results_df))
 results_df[which(abs(results_df$HedgesG_H) < 0.2),'H_significance'] <- 'no effect'
@@ -178,23 +161,8 @@ effectsize_H_plot <- ggplot(data=results_df) +
     legend.title=element_blank(),
     plot.title=element_text(hjust=0.5))
 effectsize_H_plot  
-ggsave('Output/Figures/Bioturbation_HedgesG_ShannonsDiversity.pdf', effectsize_H_plot, 
-       height=5, width=11)  
 
 full_H_fig <- ggarrange(compare_H_plot, effectsize_H_plot, ncol=1)
-ggsave('Output/Figures/Bioturbation_EffectSize_ShannonsDiversity.pdf', full_H_fig, height=8, width=8)
-
-
-
-hedgesg_visual_H <- ggplot(data=results_df) +
-  geom_abline(slope=1, intercept=0, linetype='longdash') +
-  geom_point(aes(x=M1_H, y=M2_H, fill=abs(HedgesG_H)), shape=21, size=3) +
-  scale_x_continuous(limits=c(0,3), 'Richness: EEs present') +
-  scale_y_continuous(limits=c(0,3), 'Richness: EEs absent') +
-  scale_fill_distiller(palette='PuRd', direction=1) +
-  theme_classic()
-hedgesg_visual_H 
-
 
 
 #Simpson's Dominance
@@ -266,20 +234,8 @@ effectsize_dom_plot <- ggplot(data=results_df) +
     legend.title=element_blank(),
     plot.title=element_text(hjust=0.5))
 effectsize_dom_plot  
-ggsave('Output/Figures/Bioturbation_HedgesG_Dominance.pdf', effectsize_J_plot, 
-       height=5, width=11)
 
 full_dominance_fig <- ggarrange(compare_dom_plot, effectsize_dom_plot, ncol=1)
-ggsave('Output/Figures/Bioturbation_EffectSize_Dominance.pdf', full_dominance_fig, height=8, width=8)
 
-
-hedgesg_visual_dom <- ggplot(data=results_df) +
-  geom_abline(slope=1, intercept=0, linetype='longdash') +
-  geom_point(aes(x=M1_dom, y=M2_dom, fill=abs(HedgesG_Dominance)), shape=21, size=3) +
-  scale_x_continuous('Dominance: EEs present') +
-  scale_y_continuous('Dominance: EEs absent') +
-  scale_fill_distiller(palette='PuRd', direction=1) +
-  theme_classic()
-hedgesg_visual_dom
   
 
