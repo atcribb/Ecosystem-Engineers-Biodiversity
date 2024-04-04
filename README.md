@@ -10,7 +10,7 @@ There are two .RData files in <kbd>[Data](https://github.com/atcribb/Ecosystem-E
 Analyases are not done on these two datasets perse, but they are needed in order to come up with the lists of formations that do and do not contain ecosystem engineers in the <b>Analyses</b> Effect Size scripts.
 
 ## Data Cleaning 
-These scripts will help you assemble a cleaned and stage-binned PBDB database. The following steps will create a <b>Phanerozoic_clean_final.RData</b> dataset that is used in the analyses. Unfortunately, the PBDB cannot be uploaded to github... 
+The scripts in <kbd>[DataClean](https://github.com/atcribb/Ecosystem-Engineers-Biodiversity/tree/main/DataClean)</kbd> will help you assemble a cleaned and stage-binned PBDB database. The following steps will create a <b>Phanerozoic_clean_final.RData</b> dataset that is used in the analyses. Unfortunately, the PBDB cannot be uploaded to github... 
 * Step 1: Download marine PBDB data. You can use the PBDB URL in <b>pbdb_cleaning_functions.R</b>
 * Step 2: Use the clean_marine function in <b>pbdb_cleaning_functions</b> on your raw PBDB download. Save this with some appropriate name (ie pbdb_cleaned_notbinned.RData). This cleaning function follows https://github.com/divDyn/ddPhanero, Kocsis et al. 2018 with the divDyn package
 * Step 3: Use the stage_binning function in <b>pbdb_binning_functions</b> on your cleaned PBDB data. Save this as Phanerozoic_marine_cleaned_binned.RData. This binning function follows https://github.com/divDyn/ddPhanero, Kocsis et al. 2018 with the divDyn package. 
