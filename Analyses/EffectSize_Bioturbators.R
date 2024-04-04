@@ -30,7 +30,7 @@ stage_mids <- stages$mid[4:95]
 n.quota <- 700 #how many fossils per stage?
 occs.n.forms <- 20 #how many fossils per formation?
 colls.n.forms <- 5 #how many collections per formation?
-iter <- 5 #how many iterations?
+iter <- 1000 #how many iterations?
 
 #set up dataframe for output
 #genrich = generich richness
