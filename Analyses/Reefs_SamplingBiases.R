@@ -86,13 +86,13 @@ occs.form.sub_df <- reefs_occsub_results_df
 load('ffectsizes_reefs_noformsub.RData')
 no.form.sub_df <- reefs_noformsub_results_df
 
-colls.form.sub_df$sampling_difference_occs <- sim.occs_df$sampling_difference
-occs.form.sub_df$sampling_difference_occs <- sim.occs_df$sampling_difference
-no.form.sub_df$sampling_difference_occs <- sim.occs_df$sampling_difference
+colls.form.sub_df$sampling_difference_occs <- occsperform$occs_EEforms - occsperform$occs_nonEEforms
+occs.form.sub_df$sampling_difference_occs <- occsperform$occs_EEforms - occsperform$occs_nonEEforms
+no.form.sub_df$sampling_difference_occs <- occsperform$occs_EEforms - occsperform$occs_nonEEforms
 
-colls.form.sub_df$sampling_difference_colls <- sim.colls_df$sampling_difference
-occs.form.sub_df$sampling_difference_colls <- sim.colls_df$sampling_difference
-no.form.sub_df$sampling_difference_colls <- sim.colls_df$sampling_difference
+colls.form.sub_df$sampling_difference_colls <- collsperform$colls_EEforms - collsperform$colls_nonEEforms
+occs.form.sub_df$sampling_difference_colls <-  collsperform$colls_EEforms - collsperform$colls_nonEEforms
+no.form.sub_df$sampling_difference_colls <-  collsperform$colls_EEforms - collsperform$colls_nonEEforms
 
 colls.form.sub_df$method <- '5 collections per formation'
 occs.form.sub_df$method  <- '20 occurrences per formation'
