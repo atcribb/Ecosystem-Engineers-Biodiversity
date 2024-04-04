@@ -1,18 +1,8 @@
 #Author: Alison Cribb
 #Date created: 12 March 2024
-#Last edited: 
+#Last edited: 4 April 2024
 #Last edit notes:
 #Summary: Assess sampling biases influence on bioturbation effect size results
-#         1 - Compare different subsampling methods
-#             1a. effect sizes through time
-#             1b. effect sizes versus sampling differences 
-#         2 - Compare null simulation to empirical analyses
-#             1a. effect sizes through time
-#             1b. effect sizes versus sampling differences
-#         3 - Quantile spline regression to identify stages not driven by sampling biases
-#         4 - AIC: (Effect size ~ time) versus (Effect size ~ sampling difference) versus (Effect size ~ time + sampling difference)
-
-setwd("~/Desktop/Manucripts/EcosystemEngineering_Biodiversity")
 
 #=========#
 library(divDyn)
@@ -27,16 +17,16 @@ library(egg)
 library(deeptime)
 
 #===== data input ======
-load('Output/effect_sizes/effectsizes_bioturbation_collsub_20242803.RData')
+load('effectsizes_bioturbation_collsub_20242803.RData')
 colls.form.sub_df <- bioturbation_collsub_results_df
-load('Output/effect_sizes/effectsizes_bioturbation_occsub_20242803.RData')
+load('effectsizes_bioturbation_occsub_20242803.RData')
 occs.form.sub_df <- bioturbation_occsub_results_df
-load('Output/effect_sizes/effectsizes_bioturbation_noformsub_20242803.RData')
+load('effectsizes_bioturbation_noformsub_20242803.RData')
 no.form.sub_df <- bioturbation_noformsub_results_df
 
-load('Output/effect_sizes/Null_Simulations/simulated_effectsizes_bioturbation_collections_20241003.RData')
+load('simulated_effectsizes_bioturbation_collections_20241003.RData')
 sim.colls_df <- bioturbation_effort_colls_results
-load('Output/effect_sizes/Null_Simulations/simulated_effectsizes_bioturbation_occurrences_20241003.RData')
+load('simulated_effectsizes_bioturbation_occurrences_20241003.RData')
 sim.occs_df <- bioturbation_effort_colls_results
 
 colls.form.sub_df$sampling_difference_occs <- sim.occs_df$sampling_difference
@@ -92,8 +82,6 @@ subsamp_richness <- ggplot(data=subset(compare_subsampling, !(is.na(HedgesG_genr
     legend.position=c(0.85, 0.9),
     plot.title=element_text(hjust=0.5))
 subsamp_richness
-ggsave('Output/Figures/Supplemental/Bioturbation_CompareSubsampling_Richness.pdf', subsamp_richness,
-       width=8, height=5)
 
 subsamp_H <- ggplot(data=subset(compare_subsampling, !(is.na(HedgesG_H)))) +
   geom_hline(yintercept=c(-0.2,0.2), linetype='longdash', linewidth=0.5, color='gray70') +
@@ -122,8 +110,6 @@ subsamp_H <- ggplot(data=subset(compare_subsampling, !(is.na(HedgesG_H)))) +
     legend.position=c(0.85, 0.9),
     plot.title=element_text(hjust=0.5))
 subsamp_H
-ggsave('Output/Figures/Supplemental/Bioturbation_CompareSubsampling_ShannonsH.pdf', subsamp_H,
-       width=8, height=5)
 
 subsamp_dom <- ggplot(data=subset(compare_subsampling, !(is.na(HedgesG_Dominance)))) +
   geom_hline(yintercept=c(-0.2,0.2), linetype='longdash', linewidth=0.5, color='gray70') +
@@ -152,8 +138,6 @@ subsamp_dom <- ggplot(data=subset(compare_subsampling, !(is.na(HedgesG_Dominance
     legend.position=c(0.85, 0.9),
     plot.title=element_text(hjust=0.5))
 subsamp_dom
-ggsave('Output/Figures/Supplemental/Bioturbation_CompareSubsampling_Dominance.pdf', subsamp_dom,
-       width=8, height=5)
 
 
 #1b - effect sizes versus sampling differences
@@ -293,7 +277,6 @@ effort_richness <- ggplot(data=subset(compare_subsampling, !(is.na(HedgesG_genri
   scale_shape_manual(values=compare.shapes) +
   scale_color_manual(values=compare.cols) +
   scale_y_continuous("Hedges' g") +
-  #scale_x_continuous("avg. n. occurrences per EE formations — avg. n. occurrences per non EE formations") +
   scale_x_continuous("avg. n. collections per EE formations — avg. n. collections per non EE formations") +
   ggtitle("Sampling Effort versus Richness Effect") +
   theme_classic() +
@@ -303,8 +286,6 @@ effort_richness <- ggplot(data=subset(compare_subsampling, !(is.na(HedgesG_genri
     axis.title.x=element_blank(),
     legend.position='none')
 effort_richness
-
-
 
 effort_diversity <- ggplot(data=subset(compare_subsampling, !(is.na(HedgesG_H)))) +
   geom_smooth(aes(x=sampling_difference_colls, y=HedgesG_H,
@@ -320,8 +301,7 @@ effort_diversity <- ggplot(data=subset(compare_subsampling, !(is.na(HedgesG_H)))
   scale_shape_manual(values=compare.shapes) +
   scale_color_manual(values=compare.cols) +
   scale_y_continuous("Hedges' g") +
-  #scale_x_continuous("avg. n. occurrences per EE formations — avg. n. occurrences per non EE formations") +
-  scale_x_continuous("avg. n. collections per EE formations — avg. n. collections per non EE formations") +
+ scale_x_continuous("avg. n. collections per EE formations — avg. n. collections per non EE formations") +
   ggtitle("Sampling Effort versus Shannon's Diversity Effect") +
   theme_classic() +
   theme(
@@ -346,7 +326,6 @@ effort_dominance <- ggplot(data=subset(compare_subsampling, !(is.na(HedgesG_Domi
   scale_shape_manual(values=compare.shapes) +
   scale_color_manual(values=compare.cols) +
   scale_y_continuous("Hedges' g") +
-  #scale_x_continuous("avg. n. occurrences per EE formations — avg. n. occurrences per non EE formations") +
   scale_x_continuous("avg. n. collections per EE formations — avg. n. collections per non EE formations") +
   ggtitle("Sampling Effort versus Evenness Effect") +
   theme_classic() +
@@ -357,210 +336,8 @@ effort_dominance <- ggplot(data=subset(compare_subsampling, !(is.na(HedgesG_Domi
     legend.position='none')
 effort_dominance
 
+#Compare all together
 effort_comps <- ggarrange(effort_richness, effort_diversity, effort_dominance,
           ncol=1)
-ggsave(filename='Output/Figures/Supplemental/Bioturbation_CompareSubsamplingMethods_Effort.pdf', plot=effort_comps,
-       width=10, height=10)  
 
 
-#==== qsreg ====#
-plot(colls.form.sub_df$sampling_difference_colls, 
-     colls.form.sub_df$HedgesG_H)
-sampling_effort <- subset(colls.form.sub_df, !(is.na(sampling_difference_colls)))$sampling_difference_colls
-effect_diversity <- subset(colls.form.sub_df, !(is.na(sampling_difference_colls)))$HedgesG_H
-test50 <- qsreg(sampling_effort, effect_diversity, alpha=0.5)
-xg<- seq(from=min(sampling_effort),to=max(sampling_effort),length.out=50)
-lam50 <- test50$cv.grid[,1]
-tr50 <- test50$cv.grid[,2]
-lambda50.good <- max(lam50[tr50>=6])
-smooth50 <- qsreg(sampling_effort, effect_diversity, lam=lambda50.good)
-
-test10 <- qsreg(sampling_effort, effect_diversity, alpha=0.1)
-lam10 <- test10$cv.grid[,1]
-tr10 <- test10$cv.grid[,2]
-lambda10.good <- max(lam10[tr10>=6])
-smooth10 <- qsreg(sampling_effort, effect_diversity, alpha=0.1, lam=lambda10.good)
-
-
-test90 <- qsreg(sampling_effort, effect_diversity, alpha=0.9)
-lam90 <- test90$cv.grid[,1]
-tr90 <- test90$cv.grid[,2]
-lambda90.good <- max(lam90[tr90>=6])
-smooth90 <- qsreg(sampling_effort, effect_diversity, alpha=0.9, lam=lambda90.good)
-
-plot(sampling_effort, effect_diversity, xlab='Sampling Difference (n. collections', ylab='Hedges G: Diversity')
-lines(xg, predict(smooth10, xg), col='slateblue4', lwd=2, lty=1)
-lines(xg, predict(smooth50, xg), col='gray40', lwd=2, lty=2)
-lines(xg, predict(smooth90, xg), col='slateblue4', lwd=2, lty=1)
-points(test50$x, test50$y, pch=19)
-
-#===== fit and least squares ======#
-sampling_effort <- subset(colls.form.sub_df, !(is.na(sampling_difference_colls)))$sampling_difference_colls
-effect_diversity <- subset(colls.form.sub_df, !(is.na(sampling_difference_colls)))$HedgesG_H
-fittest <- lm(effect_diversity~poly(sampling_effort,2))
-fittest
-residuals(fittest) #we can use the residuals
-plot(sampling_effort, fittest$residuals)
-summary(fittest$residuals)
-plot(sampling_effort, effect_diversity)
-
-colls.form.sub_df <- subset(colls.form.sub_df, !is.na(sampling_difference_colls))
-colls.form.sub_df$residual_H <- fittest$residuals
-colls.form.sub_df$residual_H_strength <- rep(NA, nrow(colls.form.sub_df))
-ninetyfive <- as.numeric(quantile(fittest$residuals, 0.95))
-five <- as.numeric(quantile(fittest$residuals, 0.05))
-seventyfive <- as.numeric(quantile(fittest$residuals, 0.75))
-twentyfive <- as.numeric(quantile(fittest$residuals, 0.25))
-colls.form.sub_df[which(colls.form.sub_df$residual_H>ninetyfive),'residual_H_strength'] <- '***'
-colls.form.sub_df[which(colls.form.sub_df$residual_H<five),'residual_H_strength'] <- '***'
-colls.form.sub_df[which(colls.form.sub_df$residual_H>seventyfive & colls.form.sub_df$residual_H<ninetyfive),'residual_H_strength'] <- '*'
-colls.form.sub_df[which(colls.form.sub_df$residual_H>five & colls.form.sub_df$residual_H<twentyfive), 'residual_H_strength'] <- '*'
-
-effect_richness <- subset(colls.form.sub_df, !(is.na(sampling_difference_colls)))$HedgesG_genrich
-fittest <- lm(effect_richness~poly(sampling_effort,2))
-fittest
-residuals(fittest) #we can use the residuals
-plot(sampling_effort, fittest$residuals)
-summary(fittest$residuals)
-plot(sampling_effort, effect_richness)
-
-colls.form.sub_df$residual_genrich <- fittest$residuals
-colls.form.sub_df$residual_genrich_strength <- rep(NA, nrow(colls.form.sub_df))
-ninetyfive <- as.numeric(quantile(fittest$residuals, 0.95))
-five <- as.numeric(quantile(fittest$residuals, 0.05))
-seventyfive <- as.numeric(quantile(fittest$residuals, 0.75))
-twentyfive <- as.numeric(quantile(fittest$residuals, 0.25))
-colls.form.sub_df[which(colls.form.sub_df$residual_genrich>ninetyfive),'residual_genrich_strength'] <- '***'
-colls.form.sub_df[which(colls.form.sub_df$residual_genrich<five),'residual_genrich_strength'] <- '***'
-colls.form.sub_df[which(colls.form.sub_df$residual_genrich>seventyfive & colls.form.sub_df$residual_genrich<ninetyfive),'residual_genrich_strength'] <- '*'
-colls.form.sub_df[which(colls.form.sub_df$residual_genrich>five & colls.form.sub_df$residual_genrich<twentyfive), 'residual_genrich_strength'] <- '*'
-
-effect_evenness <- subset(colls.form.sub_df, !(is.na(sampling_difference_colls)))$HedgesG_Dominance
-fittest <- lm(effect_evenness~poly(sampling_effort,2))
-fittest
-residuals(fittest) #we can use the residuals
-plot(sampling_effort, fittest$residuals)
-summary(fittest$residuals)
-plot(sampling_effort, effect_evenness)
-
-colls.form.sub_df$residual_evenness <- fittest$residuals
-colls.form.sub_df$residual_J_strength <- rep(NA, nrow(colls.form.sub_df))
-ninetyfive <- as.numeric(quantile(fittest$residuals, 0.95))
-five <- as.numeric(quantile(fittest$residuals, 0.05))
-seventyfive <- as.numeric(quantile(fittest$residuals, 0.75))
-twentyfive <- as.numeric(quantile(fittest$residuals, 0.25))
-colls.form.sub_df[which(colls.form.sub_df$residual_evenness>ninetyfive),'residual_J_strength'] <- '***'
-colls.form.sub_df[which(colls.form.sub_df$residual_evenness<five),'residual_J_strength'] <- '***'
-colls.form.sub_df[which(colls.form.sub_df$residual_evenness>seventyfive & colls.form.sub_df$residual_evenness<ninetyfive),'residual_J_strength'] <- '*'
-colls.form.sub_df[which(colls.form.sub_df$residual_evenness>five & colls.form.sub_df$residual_evenness<twentyfive), 'residual_J_strength'] <- '*'
-
-
-
-
-
-colls.form.sub_df$period <- factor(colls.form.sub_df$period, levels=unique(stage_data[4:94,]$system))
-effort_diversity <- ggplot(data=subset(colls.form.sub_df)) +
-  geom_hline(yintercept=c(-0.2,0.2), linetype='longdash', linewidth=0.5, color='gray70') +
-  geom_hline(yintercept=c(-0.5,0.5), linetype='longdash', linewidth=0.5, color='gray50') +
-  geom_hline(yintercept=c(-0.8,0.8), linetype='longdash', linewidth=0.5, color='gray30') +
-  geom_point(aes(x=mid_ma, y=HedgesG_H, 
-                 fill=period), shape=21, size=3, colour='black') +
-  scale_fill_manual(values=period.cols) +
-  geom_text(aes(x=mid_ma, y=HedgesG_H,label=residual_H_strength), nudge_y=0.05) +
-  scale_y_continuous("Hedges' g", limits=c(-1, 2.5)) +
-  #scale_x_continuous("avg. n. occurrences per EE formations — avg. n. occurrences per non EE formations") +
-  scale_x_reverse("time", limits=c(538,-5)) +
-  ggtitle("Sampling Effort versus Shannon's Diversity Effect") +
-  coord_geo(pos='bottom', dat='periods', size='auto', abbrv=FALSE, height=unit(1,'line')) +
-  theme_classic() +
-  theme(
-    strip.background = element_blank(),
-    strip.text=element_text(color='white'),
-    legend.title=element_blank(),
-    axis.title.x=element_blank(),
-    legend.position='none')
-effort_diversity
-ggsave('Output/Figures/Bioturbation_ResStrength_Diversity.pdf', effort_diversity, 
-       height=5, width=11)  
-
-effort_richness <- ggplot(data=subset(colls.form.sub_df)) +
-  geom_hline(yintercept=c(-0.2,0.2), linetype='longdash', linewidth=0.5, color='gray70') +
-  geom_hline(yintercept=c(-0.5,0.5), linetype='longdash', linewidth=0.5, color='gray50') +
-  geom_hline(yintercept=c(-0.8,0.8), linetype='longdash', linewidth=0.5, color='gray30') +
-  geom_point(aes(x=mid_ma, y=HedgesG_genrich, 
-                 fill=period), shape=21, size=3, colour='black') +
-  scale_fill_manual(values=period.cols) +
-  geom_text(aes(x=mid_ma, y=HedgesG_genrich,label=residual_genrich_strength), nudge_y=0.05) +
-  scale_y_continuous("Hedges' g", limits=c(-1.5, 2.5)) +
-  #scale_x_continuous("avg. n. occurrences per EE formations — avg. n. occurrences per non EE formations") +
-  scale_x_reverse("time", limits=c(538,-5)) +
-  ggtitle("Sampling Effort versus Richness Effect") +
-  coord_geo(pos='bottom', dat='periods', size='auto', abbrv=FALSE, height=unit(1,'line')) +
-  theme_classic() +
-  theme(
-    strip.background = element_blank(),
-    strip.text=element_text(color='white'),
-    legend.title=element_blank(),
-    axis.title.x=element_blank(),
-    legend.position='none')
-effort_richness
-ggsave('Output/Figures/Bioturbation_ResStrength_Richness.pdf', effort_richness, 
-       height=5, width=11) 
-
-effort_dominance <- ggplot(data=subset(colls.form.sub_df)) +
-  geom_hline(yintercept=c(-0.2,0.2), linetype='longdash', linewidth=0.5, color='gray70') +
-  geom_hline(yintercept=c(-0.5,0.5), linetype='longdash', linewidth=0.5, color='gray50') +
-  geom_hline(yintercept=c(-0.8,0.8), linetype='longdash', linewidth=0.5, color='gray30') +
-  geom_point(aes(x=mid_ma, y=HedgesG_Dominance, 
-                 fill=period), shape=21, size=3, colour='black') +
-  scale_fill_manual(values=period.cols) +
-  geom_text(aes(x=mid_ma, y=HedgesG_Dominance,label=residual_J_strength), nudge_y=0.05) +
-  scale_y_continuous("Hedges' g", limits=c(-1.5, 2.5)) +
-  #scale_x_continuous("avg. n. occurrences per EE formations — avg. n. occurrences per non EE formations") +
-  scale_x_reverse("time", limits=c(538,-5)) +
-  ggtitle("Sampling Effort versus Dominance Effect") +
-  coord_geo(pos='bottom', dat='periods', size='auto', abbrv=FALSE, height=unit(1,'line')) +
-  theme_classic() +
-  theme(
-    strip.background = element_blank(),
-    strip.text=element_text(color='white'),
-    legend.title=element_blank(),
-    axis.title.x=element_blank(),
-    legend.position='none')
-effort_dominance
-ggsave('Output/Figures/Bioturbation_ResStrength_Dominance.pdf', effort_evenness, 
-       height=5, width=11) 
-
-
-
-
-
-
-
-
-
-
-
-
-
-no_subsampling <- subset(compare_subsampling, method=='no formation subsampling')
-ggplot(data=subset(no_subsampling, !(is.na(HedgesG_Dominance)))) +
-  geom_smooth(aes(x=sampling_difference_colls, y=HedgesG_Dominance,
-                  fill=method, color=method),
-              method='lm',
-              formula=y~poly(x,2)) +
-  geom_point(aes(x=sampling_difference_colls, y=HedgesG_Dominance, 
-                 fill=method, shape=method), size=4, colour='black') +
-  scale_fill_manual(values='gray80') +
-  scale_shape_manual(values=23) +
-  scale_color_manual(values='gray50') +
-  scale_y_continuous("Hedges' g") +
-  #scale_x_continuous("avg. n. occurrences per EE formations — avg. n. occurrences per non EE formations") +
-  scale_x_continuous("avg. n. collections per EE formations — avg. n. collections per non EE formations") +
-  ggtitle("Sampling Effort versus Evenness Effect") +
-  theme_classic() +
-  theme(
-    strip.text=element_text(face='bold'),
-    legend.title=element_blank(),
-    #axis.title.x=element_blank(),
-    legend.position='none')
