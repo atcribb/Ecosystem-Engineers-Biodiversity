@@ -191,27 +191,27 @@ R2.diversity.x2 <- c(summary(effort_diversity_model.collsub.x2)$r.squared,
                      summary(effort_diversity_model.occssub.x2)$r.squared,
                      summary(effort_diversity_model.nosub.x2)$r.squared)
 
-#Evenness AIC tests: 
-effort_evenness_model.collsub.x1 <- lm(HedgesG_Dominance~poly(sampling_difference_colls,1),
+#Dominance AIC tests: 
+effort_dominance_model.collsub.x1 <- lm(HedgesG_Dominance~poly(sampling_difference_colls,1),
                                         data=subset(compare_subsampling, method=='5 collections per formation'))
-effort_evenness_model.occssub.x1 <- lm(HedgesG_Dominance~poly(sampling_difference_colls,1),
+effort_dominance_model.occssub.x1 <- lm(HedgesG_Dominance~poly(sampling_difference_colls,1),
                                         data=subset(compare_subsampling, method=='20 occurrences per formation'))
-effort_evenness_model.nosub.x1 <- lm(HedgesG_Dominance~poly(sampling_difference_colls,1),
+effort_dominance_model.nosub.x1 <- lm(HedgesG_Dominance~poly(sampling_difference_colls,1),
                                       data=subset(compare_subsampling, method=='no formation subsampling'))
-effort_evenness_model.collsub.x2 <- lm(HedgesG_Dominance~poly(sampling_difference_colls,2),
+effort_dominance_model.collsub.x2 <- lm(HedgesG_Dominance~poly(sampling_difference_colls,2),
                                         data=subset(compare_subsampling, method=='5 collections per formation'))
-effort_evenness_model.occssub.x2 <- lm(HedgesG_Dominance~poly(sampling_difference_colls,2),
+effort_dominance_model.occssub.x2 <- lm(HedgesG_Dominance~poly(sampling_difference_colls,2),
                                         data=subset(compare_subsampling, method=='20 occurrences per formation'))
-effort_evenness_model.nosub.x2 <- lm(HedgesG_Dominance~poly(sampling_difference_colls,2),
+effort_dominance_model.nosub.x2 <- lm(HedgesG_Dominance~poly(sampling_difference_colls,2),
                                       data=subset(compare_subsampling, method=='no formation subsampling'))
-AIC.evenness.x1 <- AIC(effort_evenness_model.collsub.x1, effort_evenness_model.occssub.x1, effort_evenness_model.nosub.x1)
-AIC.evenness.x2 <- AIC(effort_evenness_model.collsub.x2, effort_evenness_model.occssub.x2, effort_evenness_model.nosub.x2)
-R2.evenness.x1 <- c(summary(effort_evenness_model.collsub.x1)$r.squared, 
-                     summary(effort_evenness_model.occssub.x1)$r.squared,
-                     summary(effort_evenness_model.nosub.x1)$r.squared)
-R2.evenness.x2 <- c(summary(effort_evenness_model.collsub.x2)$r.squared, 
-                     summary(effort_evenness_model.occssub.x2)$r.squared,
-                     summary(effort_evenness_model.nosub.x2)$r.squared)
+AIC.dominance.x1 <- AIC(effort_dominance_model.collsub.x1, effort_dominance_model.occssub.x1, effort_dominance_model.nosub.x1)
+AIC.dominance.x2 <- AIC(effort_dominance_model.collsub.x2, effort_dominance_model.occssub.x2, effort_dominance_model.nosub.x2)
+R2.dominance.x1 <- c(summary(effort_dominance_model.collsub.x1)$r.squared, 
+                     summary(effort_dominance_model.occssub.x1)$r.squared,
+                     summary(effort_dominance_model.nosub.x1)$r.squared)
+R2.dominance.x2 <- c(summary(effort_dominance_model.collsub.x2)$r.squared, 
+                     summary(effort_dominance_model.occssub.x2)$r.squared,
+                     summary(effort_dominance_model.nosub.x2)$r.squared)
 
 
 AIC_summary <- data.frame(row.names=c('5 collections/formation', 
@@ -219,7 +219,7 @@ AIC_summary <- data.frame(row.names=c('5 collections/formation',
                                       'no formation subsampling'), 
                           AIC.richness.x1$AIC, AIC.richness.x2$AIC,
                           AIC.diversity.x1$AIC, AIC.diversity.x2$AIC,
-                          AIC.evenness.x1$AIC, AIC.evenness.x2$AIC)
+                          AIC.dominance.x1$AIC, AIC.dominance.x2$AIC)
 print(AIC_summary)
 
 R2_summary <- data.frame(row.names=c('5 collections/formation',
@@ -227,12 +227,12 @@ R2_summary <- data.frame(row.names=c('5 collections/formation',
                                         'no formation subsampling'),
                             R2.richness.x1, R2.richness.x2,
                             R2.diversity.x1, R2.diversity.x2,
-                            R2.evenness.x1, R2.evenness.x2)
+                            R2.dominance.x1, R2.dominance.x2)
 print(R2_summary)
 
 R2_text <- as.data.frame(matrix(NA, nrow=9, ncol=3))
 colnames(R2_text) <- c('measure', 'method', 'label')
-R2_text$measure <- c(rep('Richness',3),rep("Shannon's Diversity", 3),rep("Evenness",3))
+R2_text$measure <- c(rep('Richness',3),rep("Shannon's Diversity", 3),rep("Simpson's Dominance",3))
 R2_text$method <- rep(unique(compare_subsampling$method),3)
 R2_text$label <- c(paste0('R^2 = ', sprintf("%.3f", R2_summary['5 collections/formation', 'R2.richness.x2']),';'),
                    paste0('R^2 = ', sprintf("%.3f", R2_summary['20 occurrences/formation', 'R2.richness.x2']),';'),
@@ -240,15 +240,15 @@ R2_text$label <- c(paste0('R^2 = ', sprintf("%.3f", R2_summary['5 collections/fo
                    paste0('R^2 = ', sprintf("%.3f", R2_summary['5 collections/formation', 'R2.diversity.x2']),';'),
                    paste0('R^2 = ', sprintf("%.3f", R2_summary['20 occurrences/formation', 'R2.diversity.x2']),';'),
                    paste0('R^2 = ', sprintf("%.3f", R2_summary['no formation subsampling', 'R2.diversity.x2']),';'),
-                   paste0('R^2 = ', sprintf("%.3f", R2_summary['5 collections/formation', 'R2.evenness.x2']),';'),
-                   paste0('R^2 = ', sprintf("%.3f", R2_summary['20 occurrences/formation', 'R2.evenness.x2']),';'),
-                   paste0('R^2 = ', sprintf("%.3f", R2_summary['no formation subsampling', 'R2.evenness.x2']),';')
+                   paste0('R^2 = ', sprintf("%.3f", R2_summary['5 collections/formation', 'R2.dominance.x2']),';'),
+                   paste0('R^2 = ', sprintf("%.3f", R2_summary['20 occurrences/formation', 'R2.dominance.x2']),';'),
+                   paste0('R^2 = ', sprintf("%.3f", R2_summary['no formation subsampling', 'R2.dominance.x2']),';')
                    )
 print(R2_text)
 
 AIC_text <- as.data.frame(matrix(NA, nrow=9, ncol=3))
 colnames(AIC_text) <- c('measure', 'method', 'label')
-AIC_text$measure <- c(rep('Richness',3),rep("Shannon's Diversity", 3),rep("Evenness",3))
+AIC_text$measure <- c(rep('Richness',3),rep("Shannon's Diversity", 3),rep("Simpson's Dominance",3))
 AIC_text$method <- rep(unique(compare_subsampling$method),3)
 AIC_text$label <- c(paste0('AIC = ', sprintf("%.1f", AIC_summary['5 collections/formation','AIC.richness.x2.AIC'])),
                     paste0('AIC = ', sprintf("%.1f", AIC_summary['20 occurrences/formation','AIC.richness.x2.AIC'])),
@@ -256,9 +256,9 @@ AIC_text$label <- c(paste0('AIC = ', sprintf("%.1f", AIC_summary['5 collections/
                     paste0('AIC = ', sprintf("%.1f", AIC_summary['5 collections/formation','AIC.diversity.x2.AIC'])),
                     paste0('AIC = ', sprintf("%.1f", AIC_summary['20 occurrences/formation','AIC.diversity.x2.AIC'])),
                     paste0('AIC = ', sprintf("%.1f", AIC_summary['no formation subsampling','AIC.diversity.x2.AIC'])),
-                    paste0('AIC = ', sprintf("%.1f", AIC_summary['5 collections/formation','AIC.evenness.x2.AIC'])),
-                    paste0('AIC = ', sprintf("%.1f", AIC_summary['20 occurrences/formation','AIC.evenness.x2.AIC'])),
-                    paste0('AIC = ', sprintf("%.1f", AIC_summary['no formation subsampling','AIC.evenness.x2.AIC']))
+                    paste0('AIC = ', sprintf("%.1f", AIC_summary['5 collections/formation','AIC.dominance.x2.AIC'])),
+                    paste0('AIC = ', sprintf("%.1f", AIC_summary['20 occurrences/formation','AIC.dominance.x2.AIC'])),
+                    paste0('AIC = ', sprintf("%.1f", AIC_summary['no formation subsampling','AIC.dominance.x2.AIC']))
                     )
 print(AIC_text)
 
@@ -319,15 +319,15 @@ effort_dominance <- ggplot(data=subset(compare_subsampling, !(is.na(HedgesG_Domi
               formula=y~poly(x,2)) +
   geom_point(aes(x=sampling_difference_colls, y=HedgesG_Dominance, 
                  fill=method, shape=method), size=2, colour='black') +
-  geom_text(data=subset(R2_text, measure=="Evenness"), x=-3, y=3.0, hjust=0, aes(label=label)) +
-  geom_text(data=subset(AIC_text, measure=="Evenness"), x=2.2, y=3.0, hjust=0, aes(label=label)) +
+  geom_text(data=subset(R2_text, measure=="Simpson's Dominance"), x=-3, y=3.0, hjust=0, aes(label=label)) +
+  geom_text(data=subset(AIC_text, measure=="Simpson's Dominance"), x=2.2, y=3.0, hjust=0, aes(label=label)) +
   facet_wrap(vars(method)) +
   scale_fill_manual(values=compare.cols) +
   scale_shape_manual(values=compare.shapes) +
   scale_color_manual(values=compare.cols) +
   scale_y_continuous("Hedges' g") +
   scale_x_continuous("avg. n. collections per EE formations — avg. n. collections per non EE formations") +
-  ggtitle("Sampling Effort versus Evenness Effect") +
+  ggtitle("Sampling Effort versus Simpson's Dominance Effect") +
   theme_classic() +
   theme(
     strip.background = element_blank(),
