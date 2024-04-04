@@ -2,13 +2,7 @@
 #Date created: 4 March 2024
 #Last edited: 
 #Last edit notes:
-#Summary: Final analyses and output plots for Reefs effect sizes:
-#         1 - Random effects models
-#         2 - Differences in results for analyses with and without ecosystem engineers 
-#         3 - Differences in richness/diversity/evenness + effect sizes
-
-
-setwd("~/Desktop/Manucripts/EcosystemEngineering_Biodiversity")
+#Summary: Final analyses and output plots for reef effect sizes 
 
 #==== load pacakges ====#
 library(divDyn)
@@ -26,7 +20,7 @@ library(tidyr)
 library(RColorBrewer)
 
 #==== load data ====#
-load('Output/effect_sizes/effectsizes_reefs_occsub_20242803.RData')
+load('effectsizes_reefs_occsub.RData')
 results_df <- reefs_occsub_results_df
 
 results_df$stage <- factor(results_df$stage, levels=stage_names)
@@ -102,17 +96,6 @@ effectsize_richness_plot <- ggplot(data=subset(results_df, !is.na(HedgesG_genric
 effectsize_richness_plot  
 
 full_richness_fig <- ggarrange(compare_richness_plot, effectsize_richness_plot, ncol=1)
-ggsave('Output/Figures/Reefs_EffectSize_Richness.pdf', full_richness_fig, height=8, width=8)
-
-
-hedgesg_visual_richness <- ggplot(data=results_df) +
-  geom_abline(slope=1, intercept=0, linetype='longdash') +
-  geom_point(aes(x=M1_genrich, y=M2_genrich, fill=abs(HedgesG_genrich)), shape=21, size=3) +
-  scale_x_continuous( 'Richness: EEs present') +
-  scale_y_continuous('Richness: EEs absent') +
-  scale_fill_distiller(palette='PuRd', direction=1) +
-  theme_classic()
-hedgesg_visual_richness  
 
 #Shannon's Diversity
 #restructure M1 vs M2 data
@@ -180,20 +163,6 @@ effectsize_H_plot <- ggplot(data=subset(results_df, !is.na(HedgesG_H))) +
 effectsize_H_plot  
 
 full_H_fig <- ggarrange(compare_H_plot, effectsize_H_plot, ncol=1)
-ggsave('Output/Figures/Reefs_EffectSize_ShannonsDiversity.pdf', full_H_fig, height=8, width=8)
-
-
-
-hedgesg_visual_H <- ggplot(data=results_df) +
-  geom_abline(slope=1, intercept=0, linetype='longdash') +
-  geom_point(aes(x=M1_H, y=M2_H, fill=abs(HedgesG_H)), shape=21, size=3) +
-  scale_x_continuous('Shannons Diversity: EEs present') +
-  scale_y_continuous('Shannons Diversity: EEs absent') +
-  scale_fill_distiller(palette='PuRd', direction=1) +
-  theme_classic()
-hedgesg_visual_H 
-
-
 
 #Simpson's Dominance
 #restructure M1 vs M2 data
@@ -266,17 +235,3 @@ effectsize_dom_plot <- ggplot(data=subset(results_df, !is.na(HedgesG_Dominance))
 effectsize_dom_plot  
 
 full_dominance_fig <- ggarrange(compare_dom_plot, effectsize_dom_plot, ncol=1)
-ggsave('Output/Figures/Reefs_EffectSize_Dominance.pdf', full_dominance_fig, height=8, width=8)
-
-
-hedgesg_visual_dom <- ggplot(data=results_df) +
-  geom_abline(slope=1, intercept=0, linetype='longdash') +
-  geom_point(aes(x=M1_dom, y=M2_dom, fill=abs(HedgesG_Dominance)), shape=21, size=3) +
-  scale_x_continuous('Dominance: EEs present') +
-  scale_y_continuous('Dominance: EEs absent') +
-  scale_fill_distiller(palette='PuRd', direction=1) +
-  theme_classic()
-hedgesg_visual_dom
-
-
-
