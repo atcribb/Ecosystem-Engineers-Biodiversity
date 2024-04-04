@@ -343,6 +343,9 @@ for(i in 1:length(stage_names)){
 
 reef_results_df <- results_df
 
-save(reef_results_df, file='effectsizes_reefs.RData')
+#Save depending on your subsampling method:
+#save(reef_results_df, file='effectsizes_reefs_noformsub.RData')
+#save(reef_results_df, file='effectsizes_reefs_collsub.RData')
+save(reef_results_df, file='effectsizes_reefs_occsub.RData')
 
 
