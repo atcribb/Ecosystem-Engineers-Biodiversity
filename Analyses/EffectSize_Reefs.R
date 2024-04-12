@@ -146,7 +146,7 @@ for(i in 1:length(stage_names)){
     
     #absence statistics
     genrich.absence.temp <- rep(NA, n2)
-    for(k in 1:n1){
+    for(k in 1:n2){
       this.formation <- absence_formations[k] 
       this.formation.data <- subset(absence_data, formation==this.formation)
       
