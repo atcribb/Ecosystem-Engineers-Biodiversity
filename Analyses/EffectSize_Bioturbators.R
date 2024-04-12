@@ -286,12 +286,10 @@ for(i in 1:length(stage_names)){
 }
 
 #Save results 
-#bioturbation_collsub_results_df <- results_df
-bioturbation_occsub_results_df <- results_df
-#bioturbation_noformsub_results_df <- results_df 
+bioturbation_results_df <- results_df
 
-#save(bioturbation_collsub_results_df, file='effectsizes_bioturbation_collsub.RData')
-save(bioturbation_occsub_results_df, file='effectsizes_bioturbation_occsub.RData')
-#save(bioturbation_noformsub_results_df, file='effectsizes_bioturbation_noformsub.RData')
+#save(bioturbation_results_df, file='effectsizes_bioturbation_collsub.RData')
+save(bioturbation_results_df, file='effectsizes_bioturbation_occsub.RData')
+#save(bioturbation_results_df, file='effectsizes_bioturbation_noformsub.RData')
 
 
