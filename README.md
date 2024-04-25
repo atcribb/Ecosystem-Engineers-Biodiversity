@@ -2,6 +2,8 @@
 
 <i><b> THIS README IS UNDER CONSTRUCTION </i></b>
 
+If you download this repository, set it as your working directory and everything should run smoothly. You will need to create an /Output folder to save the results .RData files produced in the analyses so that you can then generate the figures.
+
 ## Datasets
 There are three .RData files in <kbd>[Data](https://github.com/atcribb/Ecosystem-Engineers-Biodiversity/tree/main/Data)</kbd>:
 * ``Bioturbators_data.RData`` - contains the bioturbator ecosystem engineering data
