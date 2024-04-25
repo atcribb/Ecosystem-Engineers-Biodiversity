@@ -1,30 +1,9 @@
 #Functions to clean marine and terrestrial pbdb data
-#Author: Alison Cribb (A.T.Cribb@soton.ac.uk)
-#Created: 20 September 2023
-#Last edited: 1 November 2023
 
-
-#======== PBDB URL BOX DO NOT TOUCH =========#
-#Marine:
-#data1.2/occs/list.csv?idqual=certain&pres=regular&interval=Cambrian,Holocene&envtype=marine&pgm=gplates,scotese,seton&show=full,img,lith,env
-
-#Terrestrial:
-#data1.2/occs/list.csv?idqual=certain&pres=regular&interval=Cambrian,Holocene&envtype=terr&pgm=gplates,scotese,seton&show=full,img,lith,env
-#===========================================#
-
+#FOLLOWING KOCSIS ET AL 2019 -- CITE THEM ACCORDINGLY! :)
 
 library(divDyn)
 library(dplyr)
-
-setwd("~/Desktop/Manucripts/Phanerozoic_climate_tracking/Functions")
-
-#======== MARINE CLEANING FUNCTION ========#
-####===========================  CHECK YOUR DATA BEFORE YOU BEGIN  ===========================######
-#     For things to go smoothly, when you downloaded your PBDB data did you....                    #
-#          - select "any marine" in Select by geologic context>Environment ?                       #
-#          - select "regular taxa only" in Select by taxonomy>Preservation ?                       #
-#          - deselect "include metadata at the beginning of the output" in Choose output options ? #
-#==================================================================================================#
 
 clean_marine <- function(data){
   
