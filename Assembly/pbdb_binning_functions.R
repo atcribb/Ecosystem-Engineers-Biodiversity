@@ -1,9 +1,7 @@
 #Stratigraphic binning to make columns for stratigraphic binng 
 #             column names = $stage
 #.                           #series
-#Author: Alison Cribb (A.T.Cribb@soton.ac.uk)
-#Created: 20 September 2023
-#Last edited: 1 November 2023
+#FROM KOCSIS ET AL 2019 - CITE ACCORDINGLY!!! :)
 
 setwd("~/Desktop/Manucripts/Phanerozoic_climate_tracking/Functions")
 
@@ -30,7 +28,7 @@ stage_binning <- function(Paleozoic_data){
   Paleozoic_data$stg[stgCondition] <- stgMin[stgCondition]
   
   #remove any data without a stage assignment 
-  Paleozoic_data <- Paleozoic_data[!is.na(Paleozoic_data$stg),] #losing 32,282 entries... lol but sitll keeping >100k
+  Paleozoic_data <- Paleozoic_data[!is.na(Paleozoic_data$stg),] #will lose a whopping ton of entries here... that's ok :)
   
   #and finally put names to stgs 
   for(i in 1:length(Paleozoic_data$stg)){
