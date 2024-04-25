@@ -1,9 +1,5 @@
 #Author: Alison Cribb
-#Date created: 12 March 2024
-#Last edited: 4 April 2024
-#Last edit notes:
 #Summary: Assess sampling biases influence on reefs effect size results
-
 
 #=========#
 library(divDyn)
@@ -19,11 +15,11 @@ library(deeptime)
 library(fields) #using qsregs for quantile spline regression
 
 #==== assess sampling biases ====#
-load('Phanerozoic_clean_final.RData') #phanerozoic PBDB data (date accessed: 1 November 2023)
+load('Data/Phanerozoic_clean_final.RData') #phanerozoic PBDB data (date accessed: 1 November 2023)
 all_data <- subset(all_data, !(is.na(formation))) #remove data without formation assignments
 all_data <- subset(all_data, !(formation=='')) #remove data without formation assignments
 
-load('Reef_Ecosystem_Engineers_final.RData')
+load('Data/Reef_Ecosystem_Engineers_final.RData')
 all_reef_builders <- subset(all_reef_builders, !(is.na(formation))) #remove data without formation assignments
 all_reef_builders <- subset(all_reef_builders, !(formation=='')) #remove data without formation assignments
 #get reef fossil data 

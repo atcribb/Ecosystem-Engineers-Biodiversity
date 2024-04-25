@@ -13,11 +13,11 @@ form.subsampling <- 'occurrences' #subsampling - 20 occurrences per formation
 library(divDyn)
 
 #===== Data input ======#
-load('Phanerozoic_clean_final.RData') #phanerozoic PBDB data (date accessed: 1 November 2023)
+load('Data/Phanerozoic_clean_final.RData') #phanerozoic PBDB data (date accessed: 1 November 2023)
 all_data <- subset(all_data, !(is.na(formation))) #remove data without formation assignments
 all_data <- subset(all_data, !(formation=='')) #remove data without formation assignments
 
-load('Reef_Ecosystem_Engineers_final.RData') #Reef data 
+load('Data/Reef_Ecosystem_Engineers_final.RData') #Reef data 
 all_reef_builders <- subset(all_reef_builders, !(is.na(formation))) #remove data without formation assignments
 all_reef_builders <- subset(all_reef_builders, !(formation=='')) #remove data without formation assignments
 #get reef fossil data 

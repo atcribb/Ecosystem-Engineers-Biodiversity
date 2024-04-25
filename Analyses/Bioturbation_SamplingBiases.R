@@ -17,11 +17,11 @@ library(egg)
 library(deeptime)
 
 #==== assess sampling biases ====#
-load('Phanerozoic_clean_final.RData') #phanerozoic PBDB data (date accessed: 1 November 2023)
+load('Data/Phanerozoic_clean_final.RData') #phanerozoic PBDB data (date accessed: 1 November 2023)
 all_data <- subset(all_data, !(is.na(formation))) #remove data without formation assignments
 all_data <- subset(all_data, !(formation=='')) #remove data without formation assignments
 
-load('Bioturbators_data.RData')
+load('Data/Bioturbators_data.RData')
 ecoeng_genera <- unique(bioturbators_data$genus) #get each ecosystem engineering genus name
 ecoeng_formations <- unique(bioturbators_data$formation) #get each formation name containing ecosystem engineers
 
