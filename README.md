@@ -26,7 +26,7 @@ There are two sets of analyses in <kbd>[Analyses](https://github.com/atcribb/Eco
 * These analyses will call results from all three subsampling protocols in the effect size analyses. To run the sampling biases analyses, be sure all results are saved to an /Output file.
 
 ## Plotting outputs 
-These scripts in <kbd>[Plotting outputs](https://github.com/atcribb/Ecosystem-Engineers-Biodiversity/tree/main/Plotting_outputs)</kbd> will reproduce the manuscript figures.
+These scripts in <kbd>[Plotting outputs](https://github.com/atcribb/Ecosystem-Engineers-Biodiversity/tree/main/Plotting_Output)</kbd> will reproduce the manuscript figures.
 
 * ``Figures_Bioturbation_EffectSizes.R`` - creates the main text figures for the effects of bioturbation on biodiversity indices.
 * ``Figures_Reef_EffectSize.R`` - creates the main text figures for the effects of reef-buidlers on biodiversity indices.
