@@ -14,6 +14,11 @@ Analyases are not done on these two datasets perse, but they are needed in order
 
 
 ## Analyses
+There are two types of <kbd>[Analyses](https://github.com/atcribb/Ecosystem-Engineers-Biodiversity/tree/main/Data)</kbd>: the main effect size analyses, and the sampling biases analyses.
+
+* ``EffectSize_Bioturbation.R`` 
+* ``EffectSize_Reefs.R``
+
 
 ## Plotting outputs 
 
