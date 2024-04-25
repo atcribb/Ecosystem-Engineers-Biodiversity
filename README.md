@@ -8,7 +8,7 @@ There are three .RData files in <kbd>[Data](https://github.com/atcribb/Ecosystem
 * ``Reef_Ecosystem_Engineers_Final.RData`` - contains the reef-builder ecosystem engineering data
 * ``Phanerozoic_clean_final.Rdata`` - contains the cleaned and stratigraphically binned (largely following Kocsis et al. 2019 ddPhanero protocol with additional cleaning of formation data) Phanerozoic data. The raw PBDB data was downloaded 1 November 2023. Using this dataset will reproduce the figures in the paper. 
 
- ``Bioturbators_data.RData`` and ``Reef_Ecosystem_Engineers_Final.RData`` are used to identify ecosystem engineering genera and formations that contain ecosystem engineering genera. Actual effect sizes analyses are performed on Phanerozoic_clean_final.RData 
+ ``Bioturbators_data.RData`` and ``Reef_Ecosystem_Engineers_Final.RData`` are used to identify ecosystem engineering genera and formations that contain ecosystem engineering genera. Actual effect sizes analyses are performed on ``Phanerozoic_clean_final.RData``
 
 ## Analyses
 There are two sets of analyses in <kbd>[Analyses](https://github.com/atcribb/Ecosystem-Engineers-Biodiversity/tree/main/Analyses)</kbd>: The main effect size analyses, and sampling biases analyses 
