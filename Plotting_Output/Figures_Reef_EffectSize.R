@@ -20,7 +20,7 @@ library(tidyr)
 library(RColorBrewer)
 
 #==== load data ====#
-load('effectsizes_reefs_occsub.RData')
+load('Output/effectsizes_reefs_occsub.RData')
 results_df <- reefs_occsub_results_df
 
 results_df$stage <- factor(results_df$stage, levels=stage_names)
