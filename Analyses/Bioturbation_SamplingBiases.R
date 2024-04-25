@@ -71,11 +71,11 @@ for(i in 1:nrow(collsperform)){
 }
 
 #===== output data input ======
-load('effectsizes_bioturbation_collsub.RData')
+load('Output/effectsizes_bioturbation_collsub.RData')
 colls.form.sub_df <- bioturbation_collsub_results_df
-load('effectsizes_bioturbation_occsub.RData')
+load('Output/effectsizes_bioturbation_occsub.RData')
 occs.form.sub_df <- bioturbation_occsub_results_df
-load('effectsizes_bioturbation_noformsub.RData')
+load('Output/effectsizes_bioturbation_noformsub.RData')
 no.form.sub_df <- bioturbation_noformsub_results_df
 
 colls.form.sub_df$sampling_difference_occs <- (occsperform$occs_EEforms - occsperform$occs_nonEEforms)
