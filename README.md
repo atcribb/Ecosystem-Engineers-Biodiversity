@@ -27,6 +27,9 @@ There are two types of <kbd>[Analyses](https://github.com/atcribb/Ecosystem-Engi
 * These analyses will reproduce supplemenetal figures x and y. You need to have run all three subsampling versions of the effect size analyses to use the sampling biases analyses scripts. 
 
 ## Plotting outputs 
+* By default, the plotting output scripts are set to use the results from subsampling 20 occurrences per formation, as this is what is used in the main text. Change what file you load if you want to see results for different subsampling methods.
+*``Figures_Bioturbation_EffectSizes.R`` - plotting outputs for main text figures comparing biodiversity measurements per formation with and without bioturbators in each stage and effect size of the presence of bioturbators in each stage. 
+*``Figures_Reef_EffectSizes.R`` - plotting outputs for main text figures comparing biodiversity measurements per formation with and without reef-builders in each stage and effect size of the presence of reef-builders in each stage.
 
 # Change log
 ### 25 April 2024
