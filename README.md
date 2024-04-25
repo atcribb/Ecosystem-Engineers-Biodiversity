@@ -17,7 +17,7 @@ There are two sets of analyses in <kbd>[Analyses](https://github.com/atcribb/Eco
 <b> Please be aware that these scripts can take more than 24 hours to run with the 1000 iterations used in the paper's final results. Consider decreasing number of iterations if using personal computer. </b>
 
 * ``EffectSize_Bioturbators.R`` - calculate Hedges g effect size values for bioturbators impacts on biodiversity
-* ``EffectSize_Bioturbators.R`` - calculates Hedges g effect size values for reef-builder impacts on biodiversity
+* ``EffectSize_Reefs.R`` - calculates Hedges g effect size values for reef-builder impacts on biodiversity
 * <b> These analyses need to be run first to create output files. </b> You will need to create an /Output folder in your working directory to save the results. There are three subsampling protocols to choose from at the top of the script that change how formations are subsampled. The subsampling protocol corresponds to file save line at the end of the script. For example, if subsampling 20 occurrences per formation (as used in the final results), leave form.subsampling <- 'occurrences' and save(bioturbation_results_df, file='Output/effectsizes_bioturbation_occsub.RData') not commented out. You do not need to change anything else in the script other than the subsampling selection and appropriate file save. 
 
 ### Sampling Biases Analyses:
