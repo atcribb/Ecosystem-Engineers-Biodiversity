@@ -123,21 +123,21 @@ for(i in 1:length(stage_names)){
       }
       
       if(form.subsampling=='occurrences'){ #if subsampling occurrences per formation,
-        form_row_idxs <- sample(nrow(this.formation.data), occs.n.forms, replace=TRUE)  #get occs.n.forms random rows
+        form_row_idxs <- sample(nrow(this.formation.data), occs.n.forms, replace=TRUE)  #get random rows
         this.formation.subbed <- this.formation.data[form_row_idxs,] #and pull out that data from this formation data
       }
 
       if(form.subsampling=='collections'){ #if subsampling collections per formation
         form_colls <- unique(this.formation.data$collection_no) #get all of the collection numbers for this formation
-        sub.idxs <- sample(length(form_colls), colls.n.forms, replace=TRUE) #get colls.n.forms random numbers that correspond to places in form_colls
-        sub.colls <- form_colls[sub.idxs] #and pull those colls.n.forms random collection numbers out of form_colls
-        this.formation.subbed <- subset(this.formation.data, collection_no %in% sub.colls) #and then pull all of the data for those colls.n.forms collections 
+        sub.idxs <- sample(length(form_colls), colls.n.forms, replace=TRUE) #get random numbers that correspond to places in form_colls
+        sub.colls <- form_colls[sub.idxs] #and pull those random collection numbers out of form_colls
+        this.formation.subbed <- subset(this.formation.data, collection_no %in% sub.colls) #and then pull all of the data for those collections 
       }
       
       this.presence_genera <- unique(this.formation.subbed$genus) #get list of all genera in the subsampled formation
       this.presence_abundance_data <- as.data.frame(matrix(NA, 
                                                            nrow=length(this.presence_genera),
-                                                           ncol=2)) #set up to collect how many of each genera there are 
+                                                           ncol=2)) #set up to collect how many of each genus there are 
       colnames(this.presence_abundance_data) <- c('gen', 'n')
       for(l in 1:nrow(this.presence_abundance_data)){ #for each genus
         this.genus <- this.presence_genera[l] 
@@ -191,21 +191,21 @@ for(i in 1:length(stage_names)){
       }
       
       if(form.subsampling=='occurrences'){ #if subsampling occurrences per formation,
-        form_row_idxs <- sample(nrow(this.formation.data), occs.n.forms, replace=TRUE) #get occs.n.forms random rows
+        form_row_idxs <- sample(nrow(this.formation.data), occs.n.forms, replace=TRUE) #get random rows
         this.formation.subbed <- this.formation.data[form_row_idxs,] #and pull out that data from this formation data
       }
        
       if(form.subsampling=='collections'){  #if subsampling collections per formation
         form_colls <- unique(this.formation.data$collection_no) #get all of the collection numbers for this formation
-        sub.idxs <- sample(length(form_colls), colls.n.forms, replace=TRUE) #get colls.n.forms random numbers that correspond to places in form_colls
-        sub.colls <- form_colls[sub.idxs] #and pull those colls.n.forms random collection numbers out of form_colls
-        this.formation.subbed <- subset(this.formation.data, collection_no %in% sub.colls) #and then pull all of the data for those colls.n.forms collections 
+        sub.idxs <- sample(length(form_colls), colls.n.forms, replace=TRUE) #get random numbers that correspond to places in form_colls
+        sub.colls <- form_colls[sub.idxs] #and pull those random collection numbers out of form_colls
+        this.formation.subbed <- subset(this.formation.data, collection_no %in% sub.colls) #and then pull all of the data for those collections 
       }
       
       this.absence_genera <- unique(this.formation.subbed$genus) #get list of all of the genera in this absence formation
       this.absence_abundance_data <- as.data.frame(matrix(NA, 
                                                           nrow=length(this.absence_genera),
-                                                          ncol=2)) #set up to collection how many occurrences of each genera in the formation
+                                                          ncol=2)) #set up to collection how many occurrences of each genus in the formation
       colnames(this.absence_abundance_data) <- c('gen', 'n') 
       for(l in 1:nrow(this.absence_abundance_data)){ #for each genus
         this.genus <- this.absence_genera[l] 
@@ -295,6 +295,7 @@ for(i in 1:length(stage_names)){
 #Save results 
 bioturbation_results_df <- results_df
 
+# doesn't work if the Output folder doesn't exist yet -WG
 #save(bioturbation_results_df, file='Output/effectsizes_bioturbation_collsub.RData')
 save(bioturbation_results_df, file='Output/effectsizes_bioturbation_occsub.RData')
 #save(bioturbation_results_df, file='Output/effectsizes_bioturbation_noformsub.RData')

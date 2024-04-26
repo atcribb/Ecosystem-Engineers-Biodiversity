@@ -6,8 +6,8 @@ set.seed(541)
 #=== USER INPUTS ===#
 #how would you like to treat formation subsampling?
 #form.subsampling <- 'none'        #no formation subsampling
-form.subsampling <- 'occurrences' #subsampling - 20 occurrences per formation
-#form.subsampling <- 'collections' #subsampling - 5 collections per formation
+form.subsampling <- 'occurrences' #subsampling - occurrences per formation
+#form.subsampling <- 'collections' #subsampling - collections per formation
 
 #==== Packages =====#
 library(divDyn)
@@ -20,7 +20,7 @@ all_data <- subset(all_data, !(formation=='')) #remove data without formation as
 load('Data/Reef_Ecosystem_Engineers_final.RData') #Reef data 
 all_reef_builders <- subset(all_reef_builders, !(is.na(formation))) #remove data without formation assignments
 all_reef_builders <- subset(all_reef_builders, !(formation=='')) #remove data without formation assignments
-#get reef fossil data 
+#get reef fossil data
 ecoeng_formations <- unique(all_reef_builders$formation) #formations containing reef builders 
 ecoeng_genera <- unique(all_reef_builders$genus) #reef-builder genera 
 
@@ -36,7 +36,7 @@ colls.n.forms <- 5 #how many collections per formation?
 iter <- 1000 #how many iterations?
 
 #set up dataframe for output
-#genrich = generich richness
+#genrich = generic richness
 #H = Shannon's Diversity
 #J = Evenness (Pielou Index)
 variables <- c('period', 'stage', 'mid_ma', 'n_EE_forms', 'n_nonEE_forms',
@@ -86,19 +86,19 @@ for(i in 1:length(stage_names)){
   #subsampling
   for(j in 1:iter){
     
-    #subsample n.quota occurrences per stage 
+    #subsample/bootstrap n.quota occurrences per stage 
     max.samples <- nrow(this.stage.data)
     row_idxs <- sample(max.samples, n.quota, replace=TRUE)
     subbed.data <- this.stage.data[row_idxs,]
     
-    #present ecosystem engineering data from stage-subsampled 700 occurrences:
+    #present ecosystem engineering data from stage-subsampled occurrences:
     presence_data <- subset(subbed.data, formation %in% ecoeng_formations)
     
     #**** If you only want to consider ecosystem engineer impacts on non-ecosystem engineering taxa, but see manuscript for discussion for why we do not do this in the final analyses, change to:
     #presence_data_all <- subset(subbed.data, formation %in% ecoeng_formations)
     #presence_data <- subset(presence_data_all, !(genus %in% ecoeng_genera))
     
-    #absent ecosystem engineering data from stage-subsampled 700 occurrences:
+    #absent ecosystem engineering data from stage-subsampled occurrences:
     absence_data <- subset(subbed.data, !(formation %in% ecoeng_formations))
     
     #get lists of presence and absence formations from that subsampled data 
@@ -110,13 +110,13 @@ for(i in 1:length(stage_names)){
     #x1,2 = mean generic richness/diversity/evenness (between formations)
     #s1,2 = standard deviation of means 
     
-    n1 <- length(unique(presence_formations)) #number of formations containing bioturbating ecosystem engineers
-    n2 <- length(unique(absence_formations)) #number of formations NOT containing bioturbating ecosystem engineers
+    n1 <- length(presence_formations) #number of formations containing reef ecosystem engineers
+    n2 <- length(absence_formations) #number of formations NOT containing reef ecosystem engineers
 
     if(n1>0){ #don't get stuck on reef gaps 
     #== presence statistics (x1) ==#
     genrich.presence.temp <- rep(NA, n1)
-    H.presence.temp <- rep(NA, n1) #set up temporary vector to save Shannon's Diversit for each of the n1 presence formations 
+    H.presence.temp <- rep(NA, n1) #set up temporary vector to save Shannon's Diversity for each of the n1 presence formations 
     Dom.presence.temp <- rep(NA, n1) #and for Simpson's dominance 
     for(k in 1:n1){
       this.formation <- presence_formations[k] 
@@ -126,22 +126,22 @@ for(i in 1:length(stage_names)){
         this.formation.subbed <- this.formation.data
       }
       
-      if(form.subsampling=='occurrences'){ #if subsampling 20 occurrences per formation,
-        form_row_idxs <- sample(nrow(this.formation.data), occs.n.forms, replace=TRUE)  #get 20 random rows
+      if(form.subsampling=='occurrences'){ #if subsampling occurrences per formation,
+        form_row_idxs <- sample(nrow(this.formation.data), occs.n.forms, replace=TRUE)  #get random rows
         this.formation.subbed <- this.formation.data[form_row_idxs,] #and pull out that data from this formation data
       }
 
-      if(form.subsampling=='collections'){ #if subsampling 5 collections per formation
+      if(form.subsampling=='collections'){ #if subsampling collections per formation
         form_colls <- unique(this.formation.data$collection_no) #get all of the collection numbers for this formation
-        sub.idxs <- sample(length(form_colls), colls.n.forms, replace=TRUE) #get 5 random numbers that correspond to places in form_colls
-        sub.colls <- form_colls[sub.idxs] #and pull those 5 random collection numbers out of form_colls
-        this.formation.subbed <- subset(this.formation.data, collection_no %in% sub.colls) #and then pull all of the data for those 5 collections 
+        sub.idxs <- sample(length(form_colls), colls.n.forms, replace=TRUE) #get random numbers that correspond to places in form_colls
+        sub.colls <- form_colls[sub.idxs] #and pull those random collection numbers out of form_colls
+        this.formation.subbed <- subset(this.formation.data, collection_no %in% sub.colls) #and then pull all of the data for those collections 
       }
       
       this.presence_genera <- unique(this.formation.subbed$genus) #get list of all genera in the subsampled formation
       this.presence_abundance_data <- as.data.frame(matrix(NA, 
                                                            nrow=length(this.presence_genera),
-                                                           ncol=2)) #set up to collect how many of each genera there are 
+                                                           ncol=2)) #set up to collect how many of each genus there are 
       colnames(this.presence_abundance_data) <- c('gen', 'n')
       for(l in 1:nrow(this.presence_abundance_data)){ #for each genus
         this.genus <- this.presence_genera[l] 
@@ -156,16 +156,17 @@ for(i in 1:length(stage_names)){
       presence_gen_props <- this.presence_abundance_data$n/presence_tot #relative abundance for each genus
       presence_shannon_div <- -sum(presence_gen_props*log(presence_gen_props)) #Shannon's Diversity formula 
       H.presence.temp[k] <- presence_shannon_div #and save 
-      points(nrow(this.presence_abundance_data), presence_shannon_div)
+      # was this originally to add points to an ongoing plot? -WG
+      #points(nrow(this.presence_abundance_data), presence_shannon_div)
       
       #and we can use this all to calculate Simpson's dominance
-      D.presence <- (sum(presence_gen_props^2)) #sum of squared generic proprtions 
+      D.presence <- (sum(presence_gen_props^2)) #sum of squared generic proportions 
       Dom.presence.temp[k] <- 1/D.presence #Simpson's dominance=1/D
       
     }
     
     #Generic richness presence statistics
-    x1 <- mean(genrich.presence.temp, na.rm=TRUE) #find mean generic richenss across all of the presence formations
+    x1 <- mean(genrich.presence.temp, na.rm=TRUE) #find mean generic richness across all of the presence formations
     s1 <- sd(genrich.presence.temp, na.rm=TRUE) #and the standard deviation
     #save
     M1_genrich_iters[j] <- x1
@@ -183,7 +184,7 @@ for(i in 1:length(stage_names)){
     
     #== absence statistics (x2) ==#
     genrich.absence.temp <- rep(NA, n2)
-    H.absence.temp <- rep(NA, n2) #set up temporary vector to save Shannon's Diversit for each of the n2 absence formations 
+    H.absence.temp <- rep(NA, n2) #set up temporary vector to save Shannon's Diversity for each of the n2 absence formations 
     Dom.absence.temp <- rep(NA, n2) #and for Simpson's dominance 
     for(k in 1:n2){
       this.formation <- absence_formations[k]
@@ -193,22 +194,22 @@ for(i in 1:length(stage_names)){
         this.formation.subbed <- this.formation.data
       }
       
-      if(form.subsampling=='occurrences'){ #if subsampling 20 occurrences per formation,
-        form_row_idxs <- sample(nrow(this.formation.data), occs.n.forms, replace=TRUE) #get 20 random rows
+      if(form.subsampling=='occurrences'){ #if subsampling occurrences per formation,
+        form_row_idxs <- sample(nrow(this.formation.data), occs.n.forms, replace=TRUE) #get random rows
         this.formation.subbed <- this.formation.data[form_row_idxs,] #and pull out that data from this formation data
       }
        
-      if(form.subsampling=='collections'){  #if subsampling 5 collections per formation
+      if(form.subsampling=='collections'){  #if subsampling collections per formation
         form_colls <- unique(this.formation.data$collection_no) #get all of the collection numbers for this formation
-        sub.idxs <- sample(length(form_colls), colls.n.forms, replace=TRUE) #get 5 random numbers that correspond to places in form_colls
-        sub.colls <- form_colls[sub.idxs] #and pull those 5 random collection numbers out of form_colls
-        this.formation.subbed <- subset(this.formation.data, collection_no %in% sub.colls) #and then pull all of the data for those 5 collections 
+        sub.idxs <- sample(length(form_colls), colls.n.forms, replace=TRUE) #get random numbers that correspond to places in form_colls
+        sub.colls <- form_colls[sub.idxs] #and pull those random collection numbers out of form_colls
+        this.formation.subbed <- subset(this.formation.data, collection_no %in% sub.colls) #and then pull all of the data for those collections 
       }
       
       this.absence_genera <- unique(this.formation.subbed$genus) #get list of all of the genera in this absence formation
       this.absence_abundance_data <- as.data.frame(matrix(NA, 
                                                           nrow=length(this.absence_genera),
-                                                          ncol=2)) #set up to collection how many occurrences of each genera in the formation
+                                                          ncol=2)) #set up to collection how many occurrences of each genus in the formation
       colnames(this.absence_abundance_data) <- c('gen', 'n') 
       for(l in 1:nrow(this.absence_abundance_data)){ #for each genus
         this.genus <- this.absence_genera[l] 
@@ -216,7 +217,7 @@ for(i in 1:length(stage_names)){
         this.genus.data <- subset(this.formation.subbed, genus==this.genus) #get data for that genus in the formation
         this.absence_abundance_data$n[l] <- nrow(this.genus.data)  #count how many occurrences there are 
       }
-      genrich.absence.temp[k] <- nrow(this.absence_abundance_data) #calculate generic richness from n. taxa (n. rows) from aundance matrix 
+      genrich.absence.temp[k] <- nrow(this.absence_abundance_data) #calculate generic richness from n. taxa (n. rows) from abundance matrix 
       
       #Shannon's diversity 
       absence_tot <- sum(this.absence_abundance_data$n) #total number of occurrences of all genera (formation size)
@@ -225,7 +226,7 @@ for(i in 1:length(stage_names)){
       H.absence.temp[k] <- absence_shannon_div
       
       #and we can sue this all to calculate Simpson's dominance
-      D.absence <- (sum(absence_gen_props^2)) #sum of squared generic proprtions 
+      D.absence <- (sum(absence_gen_props^2)) #sum of squared generic proportions 
       Dom.absence.temp[k] <- 1/D.absence #Simpson's dominance=1/D
     }
     
@@ -265,6 +266,12 @@ for(i in 1:length(stage_names)){
  
   #save data with errors in main results 
   #Generic richness
+  # it might make more sense to do weighted means and weighted standard deviations here
+  # this will take into account the standard deviations associated with each mean and will downweight those with larger errors
+  # of course you can't do this for the variables where you don't have a SD/SE for each iteration (e.g., HedgesG)
+  # see Hmisc::wtd.mean and Hmisc::wtd.var (you want the sqrt of the latter)
+  # I usually use 1/(SE^2) for the weights (and you need to use normwt=TRUE)
+  # -WG
   results_df$M1_genrich[i] <- mean(M1_genrich_iters, na.rm=TRUE)
   results_df$M1_genrich_sd[i] <- sd(M1_genrich_iters, na.rm=TRUE)
   results_df$M2_genrich[i] <- mean(M2_genrich_iters, na.rm=TRUE)
@@ -274,7 +281,7 @@ for(i in 1:length(stage_names)){
   
   #Shannon's diversity
   results_df$M1_H[i] <- mean(M1_H_iters, na.rm=TRUE)
-  results_df$M1_H_sd[i] <- sd(M1_H_iters,)
+  results_df$M1_H_sd[i] <- sd(M1_H_iters, na.rm=TRUE)
   results_df$M2_H[i] <- mean(M2_H_iters, na.rm=TRUE)
   results_df$M2_H_sd[i] <- sd(M2_H_iters, na.rm=TRUE)
   results_df$HedgesG_H[i] <- mean(HedgesG_H_iters, na.rm=TRUE)
@@ -296,6 +303,7 @@ for(i in 1:length(stage_names)){
 reef_results_df <- results_df 
 
 #Save depending on your subsampling method:
+# doesn't work if the Output folder doesn't exist yet -WG
 #save(reef_results_df, file='Output/effectsizes_reefs_noformsub.RData')
 #save(reef_results_df, file='Output/effectsizes_reefs_collsub.RData')
 save(reef_results_df, file='Output/effectsizes_reefs_occsub.RData')
