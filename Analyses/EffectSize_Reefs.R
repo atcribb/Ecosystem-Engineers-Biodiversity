@@ -305,7 +305,7 @@ reef_results_df <- results_df
 #Save depending on your subsampling method:
 # doesn't work if the Output folder doesn't exist yet -WG
 #save(reef_results_df, file='Output/effectsizes_reefs_noformsub.RData')
-#save(reef_results_df, file='Output/effectsizes_reefs_collsub.RData')
 save(reef_results_df, file='Output/effectsizes_reefs_occsub.RData')
+#save(reef_results_df, file='Output/effectsizes_reefs_collsub.RData')
 
 

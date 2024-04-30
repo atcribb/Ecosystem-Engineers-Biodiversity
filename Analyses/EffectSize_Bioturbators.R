@@ -88,6 +88,7 @@ for(i in 1:length(stage_names)){
     row_idxs <- sample(max.samples, n.quota, replace=TRUE)
     subbed.data <- this.stage.data[row_idxs,]
     
+    # for code robustness, it might be wise to copy over the if statement from EffectSize_Reefs to skip empty datasets -WG
     #present ecosystem engineering data from stage-subsampled occurrences:
     presence_data <- subset(subbed.data, formation %in% ecoeng_formations)
     
@@ -296,8 +297,8 @@ for(i in 1:length(stage_names)){
 bioturbation_results_df <- results_df
 
 # doesn't work if the Output folder doesn't exist yet -WG
-#save(bioturbation_results_df, file='Output/effectsizes_bioturbation_collsub.RData')
-save(bioturbation_results_df, file='Output/effectsizes_bioturbation_occsub.RData')
 #save(bioturbation_results_df, file='Output/effectsizes_bioturbation_noformsub.RData')
+save(bioturbation_results_df, file='Output/effectsizes_bioturbation_occsub.RData')
+#save(bioturbation_results_df, file='Output/effectsizes_bioturbation_collsub.RData')
 
 
