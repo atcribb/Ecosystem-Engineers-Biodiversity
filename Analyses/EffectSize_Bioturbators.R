@@ -3,6 +3,9 @@
 
 set.seed(541)
 
+# clear old data
+rm(list = ls())
+
 #=== USER INPUTS ===#
 #how would you like to treat formation subsampling?
 #form.subsampling <- 'none'        #no formation subsampling
@@ -21,7 +24,7 @@ load('Data/Bioturbators_data.RData')
 ecoeng_genera <- unique(bioturbators_data$genus) #get each ecosystem engineering genus name
 ecoeng_formations <- unique(bioturbators_data$formation) #get each formation name containing ecosystem engineers
 
-data(stages) #stage info from divDyn
+data("stages", package="divDyn") #stage info from divDyn
 stage_names <- stages$stage[4:95]
 stage_mids <- stages$mid[4:95]
 

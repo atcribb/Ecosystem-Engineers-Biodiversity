@@ -2,15 +2,17 @@
 #Summary: Assess sampling biases influence on reefs effect size results
 
 #=========#
+# clear old data
+rm(list = ls())
+
 library(divDyn)
-data(stages)
+data("stages", package="divDyn")
 stage_data <- stages
 stage_names <- stages$stage[4:95]
 stage_mids <- stages$mid[4:95]
 period_names <- unique(stage_data[which(stage_data$stage %in% stage_names), 'system'])
 period.cols <- unique(stage_data[which(stage_data$stage %in% stage_names), 'systemCol'])
 library(ggplot2)
-library(egg)
 library(deeptime)
 library(fields) #using qsregs for quantile spline regression
 
@@ -126,7 +128,7 @@ subsamp_richness <- ggplot(data=subset(compare_subsampling, !(is.na(HedgesG_genr
   scale_color_manual(values=compare.cols) +
   scale_shape_manual(values=compare.shapes) +
   scale_x_reverse(limits=c(538,-2), 'Time (mya)') +
-  scale_y_continuous(limits=c(-2,3), "Hedges' g (+-1sd)") +
+  scale_y_continuous(limits=c(-2,3), "Hedges' g (\u00b11sd)") +
   ggtitle('Effect Size: Generic Richness') +
   coord_geo(pos='bottom', dat='periods', size='auto', abbrv=FALSE, height=unit(1,'line')) +
   theme_classic() +
@@ -154,7 +156,7 @@ subsamp_H <- ggplot(data=subset(compare_subsampling, !(is.na(HedgesG_H)))) +
   scale_color_manual(values=compare.cols) +
   scale_shape_manual(values=compare.shapes) +
   scale_x_reverse(limits=c(538,-2), 'Time (mya)') +
-  scale_y_continuous(limits=c(-1,3), "Hedges' g (+-1sd)") +
+  scale_y_continuous(limits=c(-1,3), "Hedges' g (\u00b11sd)") +
   ggtitle("Effect Size: Shannon's Diversity (H)") +
   coord_geo(pos='bottom', dat='periods', size='auto', abbrv=FALSE, height=unit(1,'line')) +
   theme_classic() +
@@ -182,7 +184,7 @@ subsamp_dom <- ggplot(data=subset(compare_subsampling, !(is.na(HedgesG_Dominance
   scale_color_manual(values=compare.cols) +
   scale_shape_manual(values=compare.shapes) +
   scale_x_reverse(limits=c(538,-2), 'Time (mya)') +
-  scale_y_continuous(limits=c(-0.8, 3.0), "Hedges' g (+-1sd)") +
+  scale_y_continuous(limits=c(-0.8, 3.0), "Hedges' g (\u00b11sd)") +
   ggtitle("Effect Size: Simpson's Dominance (1/D)") +
   coord_geo(pos='bottom', dat='periods', size='auto', abbrv=FALSE, height=unit(1,'line')) +
   theme_classic() +
@@ -391,6 +393,6 @@ effort_dominance <- ggplot(data=subset(compare_subsampling, !(is.na(HedgesG_Domi
     legend.position='none')
 effort_dominance
 
-effort_comps <- ggarrange(effort_richness, effort_diversity, effort_dominance,
+effort_comps <- ggarrange2(effort_richness, effort_diversity, effort_dominance,
                           ncol=1)
 

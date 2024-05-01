@@ -4,24 +4,33 @@
 #Last edit notes:
 #Summary: Final analyses and output plots for reef effect sizes 
 
-#==== load pacakges ====#
+# clear old data
+rm(list = ls())
+
+#==== load packages ====#
 library(divDyn)
-data(stages)
-stage_data <- stages
-stage_names <- stage_data$stage[4:95]
-stage_mids <- stage_data$mid[4:95]
-period_names <- unique(stage_data[which(stage_data$stage %in% stage_names), 'system'])
-period.cols <- unique(stage_data[which(stage_data$stage %in% stage_names), 'systemCol'])
+data("stages", package="divDyn")
+stage_names <- stages$stage[4:95]
+stage_mids <- stages$mid[4:95]
+period_names <- unique(stages[which(stages$stage %in% stage_names), 'system'])
+period.cols <- unique(stages[which(stages$stage %in% stage_names), 'systemCol'])
 library(ggplot2)
-library(egg)
 library(deeptime)
 library(metafor)
 library(tidyr)
 library(RColorBrewer)
 
+ali_theme <- theme(
+  legend.position="inside",
+  legend.position.inside=c(0.9, 0.9),
+  legend.title=element_blank(),
+  plot.title=element_text(hjust=0.5),
+  axis.text = element_text(color = "black"),
+  axis.line.x = element_blank())
+
 #==== load data ====#
 load('Output/effectsizes_reefs_occsub.RData')
-results_df <- reefs_occsub_results_df
+results_df <- reef_results_df
 
 results_df$stage <- factor(results_df$stage, levels=stage_names)
 results_df$period <- factor(results_df$period, levels=period_names)
@@ -38,6 +47,7 @@ colnames(m2_richness) <- c('period', 'stage', 'mid_ma', 'richness', 'sd')
 m2_richness$formations <- 'Reef-builders absent'
 compare_richness <- rbind(m1_richness, m2_richness)
 
+# these are pretty similar for colorblind folks, might want to change one of them -WG
 compare.forms.cols <- c('#B4656F', '#B69696')
 compare_richness$formations <- factor(compare_richness$formations, 
                                       levels=c('Reef-builders present', 'Reef-builders absent'))
@@ -54,13 +64,9 @@ compare_richness_plot <- ggplot(data=compare_richness) +
   scale_x_reverse(limits=c(538,-5), name='Time (mya)') +
   scale_y_continuous(limits=c(0,15), name="Generic Richness") +
   ggtitle('Comparison of Generic Richness') +
-  coord_geo(pos=NA, dat='periods', size='auto', abbrv=FALSE, height=unit(1,'line')) +
+  coord_geo(pos="bottom", dat='periods', size='auto', abbrv=FALSE, height=unit(1,'line')) +
   theme_classic() +
-  theme(
-    axis.title.x=element_blank(),
-    legend.position=c(0.9, 0.9),
-    legend.title=element_blank(),
-    plot.title=element_text(hjust=0.5))
+  ali_theme
 compare_richness_plot  
 
 results_df$genrich_significance <- rep(NA, nrow(results_df))
@@ -84,18 +90,15 @@ effectsize_richness_plot <- ggplot(data=subset(results_df, !is.na(HedgesG_genric
   scale_alpha_manual(values=c(0.1, 0.3, 0.7, 1.0)) +
   scale_fill_manual(values=period.cols) +
   scale_x_reverse(limits=c(538,-5), name='Time (mya)') +
-  scale_y_continuous(limits=c(-1.8,2.5), name="Hedges' g (+-1sd)") +
+  scale_y_continuous(limits=c(-1.2,2.5), name="Hedges' g (\u00b11sd)") +
   guides(fill='none') +
   ggtitle('Reef-builder Effect Size: Generic Richness') +
   coord_geo(pos='bottom', dat='periods', size='auto', abbrv=FALSE, height=unit(1,'line')) +
   theme_classic() +
-  theme(
-    legend.position=c(0.9,0.9),
-    legend.title=element_blank(),
-    plot.title=element_text(hjust=0.5))
+  ali_theme
 effectsize_richness_plot  
 
-full_richness_fig <- ggarrange(compare_richness_plot, effectsize_richness_plot, ncol=1)
+full_richness_fig <- ggarrange2(compare_richness_plot, effectsize_richness_plot, ncol=1)
 
 #Shannon's Diversity
 #restructure M1 vs M2 data
@@ -122,13 +125,9 @@ compare_H_plot <- ggplot(data=compare_H) +
   scale_x_reverse(limits=c(538,-5), name='Time (mya)') +
   scale_y_continuous(limits=c(0,2.5), name="Shannon's Diversity (H)") +
   ggtitle("Comparison of Shannon's Diversity") +
-  coord_geo(pos=NA, dat='periods', size='auto', abbrv=FALSE, height=unit(1,'line')) +
+  coord_geo(pos="bottom", dat='periods', size='auto', abbrv=FALSE, height=unit(1,'line')) +
   theme_classic() +
-  theme(
-    axis.title.x=element_blank(),
-    legend.position=c(0.9, 0.9),
-    legend.title=element_blank(),
-    plot.title=element_text(hjust=0.5))
+  ali_theme
 compare_H_plot  
 
 results_df$H_significance <- rep(NA, nrow(results_df))
@@ -151,18 +150,15 @@ effectsize_H_plot <- ggplot(data=subset(results_df, !is.na(HedgesG_H))) +
   scale_alpha_manual(values=c(0.1, 0.3, 0.7, 1.0)) +
   scale_fill_manual(values=period.cols) +
   scale_x_reverse(limits=c(538,-5), name='Time (mya)') +
-  scale_y_continuous(limits=c(-1,2.3), name="Hedges' g (+-1sd)") +
+  scale_y_continuous(limits=c(-1,2.3), name="Hedges' g (\u00b11sd)") +
   guides(fill='none') +
   ggtitle('Reef-builder Effect Size: Shannons Diversity') +
   coord_geo(pos='bottom', dat='periods', size='auto', abbrv=FALSE, height=unit(1,'line')) +
   theme_classic() +
-  theme(
-    legend.position=c(0.9,0.9),
-    legend.title=element_blank(),
-    plot.title=element_text(hjust=0.5))
+  ali_theme
 effectsize_H_plot  
 
-full_H_fig <- ggarrange(compare_H_plot, effectsize_H_plot, ncol=1)
+full_H_fig <- ggarrange2(compare_H_plot, effectsize_H_plot, ncol=1)
 
 #Simpson's Dominance
 #restructure M1 vs M2 data
@@ -189,13 +185,9 @@ compare_dom_plot <- ggplot(data=compare_dom) +
   scale_x_reverse(limits=c(538,-5), name='Time (mya)') +
   scale_y_continuous(name="Simpson's Dominance (1/D)") +
   ggtitle("Comparison of Simpson's Dominance") +
-  coord_geo(pos=NA, dat='periods', size='auto', abbrv=FALSE, height=unit(1,'line')) +
+  coord_geo(pos="bottom", dat='periods', size='auto', abbrv=FALSE, height=unit(1,'line')) +
   theme_classic() +
-  theme(
-    axis.title.x=element_blank(),
-    legend.position=c(0.9, 0.9),
-    legend.title=element_blank(),
-    plot.title=element_text(hjust=0.5))
+  ali_theme
 compare_dom_plot 
 
 results_df$dominance_significance <- rep(NA, nrow(results_df))
@@ -223,15 +215,12 @@ effectsize_dom_plot <- ggplot(data=subset(results_df, !is.na(HedgesG_Dominance))
   scale_size_manual(values=c(2, 2.4, 3.2, 3.6)) +
   scale_alpha_manual(values=c(0.1, 0.3, 0.7, 1.0)) +
   scale_x_reverse(limits=c(538,-5), name='Time (mya)') +
-  scale_y_continuous(limits=c(-1,2.5), name="Hedges' g (+-1sd)") +
+  scale_y_continuous(limits=c(-1,2.5), name="Hedges' g (\u00b11sd)") +
   guides(fill='none') +
   ggtitle("Reef-builder Effect Size: Simpson's Dominance") +
   coord_geo(pos='bottom', dat='periods', size='auto', abbrv=FALSE, height=unit(1,'line')) +
   theme_classic() +
-  theme(
-    legend.position=c(0.9,0.9),
-    legend.title=element_blank(),
-    plot.title=element_text(hjust=0.5))
+  ali_theme
 effectsize_dom_plot  
 
-full_dominance_fig <- ggarrange(compare_dom_plot, effectsize_dom_plot, ncol=1)
+full_dominance_fig <- ggarrange2(compare_dom_plot, effectsize_dom_plot, ncol=1)

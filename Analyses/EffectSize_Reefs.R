@@ -3,6 +3,9 @@
 
 set.seed(541)
 
+# clear old data
+rm(list = ls())
+
 #=== USER INPUTS ===#
 #how would you like to treat formation subsampling?
 #form.subsampling <- 'none'        #no formation subsampling
@@ -24,7 +27,7 @@ all_reef_builders <- subset(all_reef_builders, !(formation=='')) #remove data wi
 ecoeng_formations <- unique(all_reef_builders$formation) #formations containing reef builders 
 ecoeng_genera <- unique(all_reef_builders$genus) #reef-builder genera 
 
-data(stages) #stage info from divDyn
+data("stages", package="divDyn") #stage info from divDyn
 stage_names <- stages$stage[4:95]
 stage_mids <- stages$mid[4:95]
 
