@@ -1,4 +1,5 @@
-#Author: Alison Cribb
+#Authors: Alison Cribb, Will Gearty
+#Contact: A.T.Cribb@soton.ac.uk
 #Summary: Calculates effect size of bioturbating ecosystem engineers on generic richness, H, and J for each stage through the Phanerozoic
 
 set.seed(541)
@@ -39,7 +40,7 @@ iter <- 1000 #how many iterations?
 #set up dataframe for output
 #genrich = generic richness
 #H = Shannon's Diversity
-#J = Evenness (Pielou Index)
+#dom = Simpson's Dominance
 variables <- c('period', 'stage', 'mid_ma', 'n_EE_forms', 'n_nonEE_forms',
                'M1_genrich', 'M1_genrich_sd', 'M2_genrich', 'M2_genrich_sd', 'HedgesG_genrich', 'g_genrich_sd',
                'M1_H', 'M1_H_sd', 'M2_H', 'M2_H_sd', 'HedgesG_H', 'g_H_sd',
@@ -116,7 +117,7 @@ for(i in 1:length(stage_names)){
       
       #=== Collect ecological statistics: ===#
       #n1,2 = sample size (no. formations)
-      #x1,2 = mean generic richness/diversity/evenness (between formations)
+      #x1,2 = mean generic richness/diversity/dominance 
       #s1,2 = standard deviation of means 
       
       n1 <- length(unique(presence_formations)) #number of formations containing bioturbating ecosystem engineers
