@@ -1,4 +1,4 @@
-#Authosr: Alison Cribb, Will Gearty
+#Authors: Alison Cribb, Will Gearty
 #Summary: Assess sampling biases influence on bioturbation effect size results
 
 #=========#
