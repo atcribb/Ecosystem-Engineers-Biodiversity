@@ -1,6 +1,6 @@
 #Authors: Alison Cribb, Will Gearty
 #Contact: A.T.Cribb@soton.ac.uk
-#Summary: Calculates effect size of reef-building ecosystem engineers on generic richness, H, and J for each stage through the Phanerozoic
+#Summary: Calculates effect size of reef-building ecosystem engineers on generic richness, Shannon's Diversity, and Simpson's Dominance for each stage through the Phanerozoic
 
 set.seed(541)
 
