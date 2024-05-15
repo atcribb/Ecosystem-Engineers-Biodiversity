@@ -140,7 +140,7 @@ for(i in 1:length(stage_names)){
           }
           
           if(form.subsampling=='occurrences'){ #if subsampling occurrences per formation,
-            form_row_idxs <- sample(nrow(this.formation.data), occs.n.forms, replace=TRUE)  #get 20 random rows
+            form_row_idxs <- sample(nrow(this.formation.data), occs.n.forms, replace=TRUE)  #get random rows
             this.formation.subbed <- this.formation.data[form_row_idxs,] #and pull out that data from this formation data
           }
           
