@@ -1,7 +1,4 @@
-#Author: Alison Cribb
-#Date created: 4 March 2024
-#Last edited: 12 March 2024
-#Last edit notes:
+#Authors: Alison Cribb, Will Gearty
 #Summary: Output plots for bioturbation effect sizes:
 
 # clear old data
@@ -23,7 +20,7 @@ library(metafor)
 library(tidyr)
 library(RColorBrewer)
 
-ali_theme <- theme(
+effectsize_theme <- theme(
   legend.position="inside",
   legend.position.inside=c(0.9, 0.9),
   legend.title=element_blank(),
@@ -68,7 +65,7 @@ compare_richness_plot <- ggplot(data=compare_richness) +
   ggtitle('Comparison of Generic Richness') +
   coord_geo(pos="bottom", dat='periods', size='auto', abbrv=FALSE, height=unit(1,'line')) +
   theme_classic() +
-  ali_theme
+  effectsize_theme
 compare_richness_plot  
 
 results_df$genrich_significance <- rep(NA, nrow(results_df))
@@ -97,7 +94,7 @@ effectsize_richness_plot <- ggplot(data=subset(results_df, !is.na(HedgesG_genric
   ggtitle('Bioturbation Effect Size: Generic Richness') +
   coord_geo(pos='bottom', dat='periods', size='auto', abbrv=FALSE, height=unit(1,'line')) +
   theme_classic() +
-  ali_theme
+  effectsize_theme
 effectsize_richness_plot  
 
 full_richness_fig <- ggarrange2(compare_richness_plot, effectsize_richness_plot, ncol=1)
@@ -129,7 +126,7 @@ compare_H_plot <- ggplot(data=compare_H) +
   ggtitle("Comparison of Shannon's Diversity") +
   coord_geo(pos="bottom", dat='periods', size='auto', abbrv=FALSE, height=unit(1,'line')) +
   theme_classic() +
-  ali_theme
+  effectsize_theme
 compare_H_plot  
 
 results_df$H_significance <- rep(NA, nrow(results_df))
@@ -157,7 +154,7 @@ effectsize_H_plot <- ggplot(data=results_df) +
   ggtitle('Bioturbation Effect Size: Shannons Diversity') +
   coord_geo(pos='bottom', dat='periods', size='auto', abbrv=FALSE, height=unit(1,'line')) +
   theme_classic() +
-  ali_theme
+  effectsize_theme
 effectsize_H_plot  
 
 full_H_fig <- ggarrange2(compare_H_plot, effectsize_H_plot, ncol=1)
@@ -190,7 +187,7 @@ compare_dom_plot <- ggplot(data=compare_dom) +
   ggtitle("Comparison of Simpson's Dominance") +
   coord_geo(pos="bottom", dat='periods', size='auto', abbrv=FALSE, height=unit(1,'line')) +
   theme_classic() +
-  ali_theme
+  effectsize_theme
 compare_dom_plot 
 
 results_df$dominance_significance <- rep(NA, nrow(results_df))
@@ -223,7 +220,7 @@ effectsize_dom_plot <- ggplot(data=results_df) +
   ggtitle("Bioturbation Effect Size: Simpson's Dominance") +
   coord_geo(pos='bottom', dat='periods', size='auto', abbrv=FALSE, height=unit(1,'line')) +
   theme_classic() +
-  ali_theme
+  effectsize_theme
 effectsize_dom_plot  
 
 full_dominance_fig <- ggarrange2(compare_dom_plot, effectsize_dom_plot, ncol=1)
