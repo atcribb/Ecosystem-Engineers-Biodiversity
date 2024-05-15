@@ -1,7 +1,4 @@
-#Author: Alison Cribb
-#Date created: 4 March 2024
-#Last edited: 
-#Last edit notes:
+#Authors: Alison Cribb, Will Gearty
 #Summary: Final analyses and output plots for reef effect sizes 
 
 # clear old data
@@ -20,7 +17,7 @@ library(metafor)
 library(tidyr)
 library(RColorBrewer)
 
-ali_theme <- theme(
+effectsize_theme <- theme(
   legend.position="inside",
   legend.position.inside=c(0.9, 0.9),
   legend.title=element_blank(),
@@ -48,7 +45,7 @@ m2_richness$formations <- 'Reef-builders absent'
 compare_richness <- rbind(m1_richness, m2_richness)
 
 # these are pretty similar for colorblind folks, might want to change one of them -WG
-compare.forms.cols <- c('#B4656F', '#B69696')
+compare.forms.cols <- c('#A03544', '#B19398')
 compare_richness$formations <- factor(compare_richness$formations, 
                                       levels=c('Reef-builders present', 'Reef-builders absent'))
 
@@ -66,7 +63,7 @@ compare_richness_plot <- ggplot(data=compare_richness) +
   ggtitle('Comparison of Generic Richness') +
   coord_geo(pos="bottom", dat='periods', size='auto', abbrv=FALSE, height=unit(1,'line')) +
   theme_classic() +
-  ali_theme
+  effectsize_theme
 compare_richness_plot  
 
 results_df$genrich_significance <- rep(NA, nrow(results_df))
@@ -95,7 +92,7 @@ effectsize_richness_plot <- ggplot(data=subset(results_df, !is.na(HedgesG_genric
   ggtitle('Reef-builder Effect Size: Generic Richness') +
   coord_geo(pos='bottom', dat='periods', size='auto', abbrv=FALSE, height=unit(1,'line')) +
   theme_classic() +
-  ali_theme
+  effectsize_theme
 effectsize_richness_plot  
 
 full_richness_fig <- ggarrange2(compare_richness_plot, effectsize_richness_plot, ncol=1)
@@ -110,7 +107,7 @@ colnames(m2_H) <- c('period', 'stage', 'mid_ma', 'H', 'sd')
 m2_H$formations <- 'Reef-builders absent'
 compare_H <- rbind(m1_H, m2_H)
 
-compare.forms.cols <- c('#B4656F', '#B69696')
+compare.forms.cols <- c('#A03544', '#B19398')
 compare_H$formations <- factor(compare_H$formations, 
                                levels=c('Reef-builders present', 'Reef-builders absent'))
 
@@ -127,7 +124,7 @@ compare_H_plot <- ggplot(data=compare_H) +
   ggtitle("Comparison of Shannon's Diversity") +
   coord_geo(pos="bottom", dat='periods', size='auto', abbrv=FALSE, height=unit(1,'line')) +
   theme_classic() +
-  ali_theme
+  effectsize_theme
 compare_H_plot  
 
 results_df$H_significance <- rep(NA, nrow(results_df))
@@ -155,7 +152,7 @@ effectsize_H_plot <- ggplot(data=subset(results_df, !is.na(HedgesG_H))) +
   ggtitle('Reef-builder Effect Size: Shannons Diversity') +
   coord_geo(pos='bottom', dat='periods', size='auto', abbrv=FALSE, height=unit(1,'line')) +
   theme_classic() +
-  ali_theme
+  effectsize_theme
 effectsize_H_plot  
 
 full_H_fig <- ggarrange2(compare_H_plot, effectsize_H_plot, ncol=1)
@@ -170,7 +167,7 @@ colnames(m2_dom) <- c('period', 'stage', 'mid_ma', 'dom', 'sd')
 m2_dom$formations <- 'Reef-builders absent'
 compare_dom <- rbind(m1_dom, m2_dom)
 
-compare.forms.cols <- c('#B4656F', '#B69696')
+compare.forms.cols <- c('#A03544', '#B19398')
 compare_dom$formations <- factor(compare_dom$formations, 
                                  levels=c('Reef-builders present', 'Reef-builders absent'))
 
@@ -187,7 +184,7 @@ compare_dom_plot <- ggplot(data=compare_dom) +
   ggtitle("Comparison of Simpson's Dominance") +
   coord_geo(pos="bottom", dat='periods', size='auto', abbrv=FALSE, height=unit(1,'line')) +
   theme_classic() +
-  ali_theme
+  effectsize_theme
 compare_dom_plot 
 
 results_df$dominance_significance <- rep(NA, nrow(results_df))
@@ -220,7 +217,7 @@ effectsize_dom_plot <- ggplot(data=subset(results_df, !is.na(HedgesG_Dominance))
   ggtitle("Reef-builder Effect Size: Simpson's Dominance") +
   coord_geo(pos='bottom', dat='periods', size='auto', abbrv=FALSE, height=unit(1,'line')) +
   theme_classic() +
-  ali_theme
+  effectsize_theme
 effectsize_dom_plot  
 
 full_dominance_fig <- ggarrange2(compare_dom_plot, effectsize_dom_plot, ncol=1)
