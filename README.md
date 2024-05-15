@@ -32,6 +32,12 @@ There are two types of <kbd>[Analyses](https://github.com/atcribb/Ecosystem-Engi
 * ``Figures_Reef_EffectSizes.R`` - plotting outputs for main text figures comparing biodiversity measurements per formation with and without reef-builders in each stage and effect size of the presence of reef-builders in each stage.
 
 # Change log
+### 15 May 2024
+```diff
++ update effect size analyses to calculate weighted means and standard deviations for generic richness and Shannon's Diversity
+- remove AIC tests from sampling biases analyses
+```
+
 ### 25 April 2024
 ```diff
 + upload full PBBD dataset
