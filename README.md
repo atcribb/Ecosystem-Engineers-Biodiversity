@@ -34,6 +34,11 @@ There are two types of <kbd>[Analyses](https://github.com/atcribb/Ecosystem-Engi
 # Change log
 ### 15 May 2024
 ```diff
+-  remove weighed means/standard deviation because of lack of ability to consistently apply in each stage - with large iter, more likely to deal with n1=1 in stages where EEs are not dominant, where sd and thereby weighted means/sd cannot be calculated. Switching back to unweighted mean and standard deviation to opt for consistency. None of this impacts Hedges g.
+```
+
+### 15 May 2024
+```diff
 + update effect size analyses to calculate weighted means and standard deviations for generic richness and Shannon's Diversity
 - remove AIC tests from sampling biases analyses
 ```
