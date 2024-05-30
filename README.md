@@ -32,7 +32,12 @@ There are two types of <kbd>[Analyses](https://github.com/atcribb/Ecosystem-Engi
 * ``Figures_Reef_EffectSizes.R`` - plotting outputs for main text figures comparing biodiversity measurements per formation with and without reef-builders in each stage and effect size of the presence of reef-builders in each stage.
 
 # Change log
-### 15 May 2024
+### 30 May 2024
+```diff
++ Minor edits to plotting aesthetics, and fixing issue where effect sizes strength was not being assessed based on uncertainty bounds
+```
+
+### 28 May 2024
 ```diff
 -  remove weighed means/standard deviation because of lack of ability to consistently apply in each stage - with large iter, more likely to deal with n1=1 in stages where EEs are not dominant, where sd and thereby weighted means/sd cannot be calculated. Switching back to unweighted mean and standard deviation to opt for consistency. None of this impacts Hedges g.
 ```
