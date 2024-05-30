@@ -64,16 +64,20 @@ compare_richness_plot <- ggplot(data=compare_richness) +
   scale_y_continuous(limits=c(0,15), name="Generic Richness") +
   ggtitle('Comparison of Generic Richness') +
   coord_geo(pos="bottom", dat='periods', size='auto', abbrv=FALSE, height=unit(1,'line')) +
+  annotate("text", x=530, y=14.5, label="A", size=5) +
   theme_classic() +
   effectsize_theme
 compare_richness_plot  
 
+#determine significance of effect size:
+results_df$genrich_lowerbound <- results_df$HedgesG_genrich - results_df$g_genrich_sd #get lower bound to assess whether uncertainty overlaps with effect size thresholds  
 results_df$genrich_significance <- rep(NA, nrow(results_df))
-results_df[which(abs(results_df$HedgesG_genrich) < 0.2),'genrich_significance'] <- 'no effect'
-results_df[which( abs(results_df$HedgesG_genrich) >= 0.2 & abs(results_df$HedgesG_genrich) < 0.5),'genrich_significance'] <- 'weak effect'
-results_df[which( abs(results_df$HedgesG_genrich) >= 0.5 & abs(results_df$HedgesG_genrich) < 0.8),'genrich_significance'] <- 'medium effect'
-results_df[which( abs(results_df$HedgesG_genrich) >= 0.8),'genrich_significance'] <- 'strong effect'
-results_df$genrich_significance <- factor(results_df$genrich_significance, levels=c('no effect', 'weak effect', 'medium effect', 'strong effect'))
+#assign effect size significance
+results_df[which(abs(results_df$genrich_lowerbound) < 0.2),'genrich_significance'] <- 'no effect'
+results_df[which( abs(results_df$genrich_lowerbound) >= 0.2 & abs(results_df$genrich_lowerbound) < 0.5),'genrich_significance'] <- 'weak effect'
+results_df[which( abs(results_df$genrich_lowerbound) >= 0.5 & abs(results_df$genrich_lowerbound) < 0.8),'genrich_significance'] <- 'moderate effect'
+results_df[which( abs(results_df$genrich_lowerbound) >= 0.8),'genrich_significance'] <- 'strong effect'
+results_df$genrich_significance <- factor(results_df$genrich_significance, levels=c('no effect', 'weak effect', 'moderate effect', 'strong effect'))
 
 
 effectsize_richness_plot <- ggplot(data=subset(results_df, !is.na(HedgesG_genrich))) +
@@ -85,14 +89,15 @@ effectsize_richness_plot <- ggplot(data=subset(results_df, !is.na(HedgesG_genric
                 width=8) +
   geom_point(aes(x=mid_ma, y=HedgesG_genrich, size=genrich_significance), fill='white', shape=21) +
   geom_point(aes(x=mid_ma, y=HedgesG_genrich, fill=period, alpha=genrich_significance, size=genrich_significance), shape=21) +
-  scale_size_manual(values=c(2, 2.4, 3.2, 3.6)) +
+  scale_size_manual(values=c(2, 3, 4, 5)) +
   scale_alpha_manual(values=c(0.1, 0.3, 0.7, 1.0)) +
   scale_fill_manual(values=period.cols) +
   scale_x_reverse(limits=c(538,-5), name='Time (mya)') +
-  scale_y_continuous(limits=c(-1.2,3.2), name="Hedges' g (\u00b11sd)") +
+  scale_y_continuous(limits=c(-1.2,3.2), name=expression(paste("Hedges' g (\u00b11",sigma,")"))) +
   guides(fill='none') +
   ggtitle('Bioturbation Effect Size: Generic Richness') +
   coord_geo(pos='bottom', dat='periods', size='auto', abbrv=FALSE, height=unit(1,'line')) +
+  annotate("text", x=530, y=3, label="B", size=5) +
   theme_classic() +
   effectsize_theme
 effectsize_richness_plot  
@@ -125,15 +130,18 @@ compare_H_plot <- ggplot(data=compare_H) +
   scale_y_continuous(limits=c(0,2.8), name="Shannon's Diversity (H)") +
   ggtitle("Comparison of Shannon's Diversity") +
   coord_geo(pos="bottom", dat='periods', size='auto', abbrv=FALSE, height=unit(1,'line')) +
+  annotate("text", x=530, y=2.7, label="A", size=5) +
   theme_classic() +
   effectsize_theme
 compare_H_plot  
 
+#assign effect size significance thresholds
+results_df$H_lowerbound <- abs(results_df$HedgesG_H) - results_df$g_H_sd
 results_df$H_significance <- rep(NA, nrow(results_df))
-results_df[which(abs(results_df$HedgesG_H) < 0.2),'H_significance'] <- 'no effect'
-results_df[which( abs(results_df$HedgesG_H) >= 0.2 & abs(results_df$HedgesG_H) < 0.5),'H_significance'] <- 'weak effect'
-results_df[which( abs(results_df$HedgesG_H) >= 0.5 & abs(results_df$HedgesG_H) < 0.8),'H_significance'] <- 'medium effect'
-results_df[which( abs(results_df$HedgesG_H) >= 0.8),'H_significance'] <- 'strong effect'
+results_df[which(abs(results_df$H_lowerbound) < 0.2),'H_significance'] <- 'no effect'
+results_df[which( abs(results_df$H_lowerbound) >= 0.2 & abs(results_df$H_lowerbound) < 0.5),'H_significance'] <- 'weak effect'
+results_df[which( abs(results_df$H_lowerbound) >= 0.5 & abs(results_df$H_lowerbound) < 0.8),'H_significance'] <- 'medium effect'
+results_df[which( abs(results_df$H_lowerbound) >= 0.8),'H_significance'] <- 'strong effect'
 results_df$H_significance <- factor(results_df$H_significance, levels=c('no effect', 'weak effect', 'medium effect' , 'strong effect'))
 
 effectsize_H_plot <- ggplot(data=results_df) +
@@ -145,20 +153,20 @@ effectsize_H_plot <- ggplot(data=results_df) +
                 width=8) +
   geom_point(aes(x=mid_ma, y=HedgesG_H, size=H_significance), fill='white', shape=21) +
   geom_point(aes(x=mid_ma, y=HedgesG_H, fill=period, alpha=H_significance, size=H_significance), shape=21) +
-  scale_size_manual(values=c(2, 2.4, 3.2, 3.6)) +
+  scale_size_manual(values=c(2, 3, 4, 5)) +
   scale_alpha_manual(values=c(0.1, 0.3, 0.7, 1.0)) +
   scale_fill_manual(values=period.cols) +
   scale_x_reverse(limits=c(538,-5), name='Time (mya)') +
-  scale_y_continuous(limits=c(-1,3.2), name="Hedges' g (\u00b11sd)") +
+  scale_y_continuous(limits=c(-1.2,3.2), name=expression(paste("Hedges' g (\u00b11",sigma,")"))) +
   guides(fill='none') +
   ggtitle('Bioturbation Effect Size: Shannons Diversity') +
   coord_geo(pos='bottom', dat='periods', size='auto', abbrv=FALSE, height=unit(1,'line')) +
+  annotate("text", x=530, y=3, label="B", size=5) +
   theme_classic() +
   effectsize_theme
 effectsize_H_plot  
 
 full_H_fig <- ggarrange2(compare_H_plot, effectsize_H_plot, ncol=1)
-
 
 #Simpson's Dominance
 #restructure M1 vs M2 data
@@ -190,16 +198,13 @@ compare_dom_plot <- ggplot(data=compare_dom) +
   effectsize_theme
 compare_dom_plot 
 
-results_df$dominance_significance <- rep(NA, nrow(results_df))
-# 0.2	=>	small effect
-# 0.5	=>	medium effect
-# 0.8	=>	large effect
 
+results_df$dominance_lowerbound <- abs(results_df$HedgesG_Dominance) - results_df$g_dom_sd
 results_df$dominance_significance <- rep(NA, nrow(results_df))
-results_df[which(abs(results_df$HedgesG_Dominance) < 0.2),'dominance_significance'] <- 'no effect'
-results_df[which(abs(results_df$HedgesG_Dominance) >= 0.2 & abs(results_df$HedgesG_Dominance) < 0.5),'dominance_significance'] <- 'weak effect'
-results_df[which(abs(results_df$HedgesG_Dominance) >= 0.5 & abs(results_df$HedgesG_Dominance) < 0.8),'dominance_significance'] <- 'medium effect'
-results_df[which(abs(results_df$HedgesG_Dominance) >= 0.8),'dominance_significance'] <- 'strong effect'
+results_df[which(abs(results_df$dominance_lowerbound) < 0.2),'dominance_significance'] <- 'no effect'
+results_df[which(abs(results_df$dominance_lowerbound) >= 0.2 & abs(results_df$dominance_lowerbound) < 0.5),'dominance_significance'] <- 'weak effect'
+results_df[which(abs(results_df$dominance_lowerbound) >= 0.5 & abs(results_df$dominance_lowerbound) < 0.8),'dominance_significance'] <- 'medium effect'
+results_df[which(abs(results_df$dominance_lowerbound) >= 0.8),'dominance_significance'] <- 'strong effect'
 results_df$dominance_significance <- factor(results_df$dominance_significance, levels=c('no effect', 'weak effect', 'medium effect', 'strong effect'))
 
 effectsize_dom_plot <- ggplot(data=results_df) +
@@ -212,7 +217,7 @@ effectsize_dom_plot <- ggplot(data=results_df) +
   geom_point(aes(x=mid_ma, y=HedgesG_Dominance, size=dominance_significance), fill='white', shape=21) +
   geom_point(aes(x=mid_ma, y=HedgesG_Dominance, fill=period, alpha=dominance_significance, size=dominance_significance), shape=21) +
   scale_fill_manual(values=period.cols) +
-  scale_size_manual(values=c(2, 2.4, 3.2, 3.6)) +
+  scale_size_manual(values=c(2, 3,4,5)) +
   scale_alpha_manual(values=c(0.1, 0.3, 0.7, 1.0)) +
   scale_x_reverse(limits=c(538,-5), name='Time (mya)') +
   scale_y_continuous(limits=c(-1.0,3.5), name="Hedges' g (\u00b11sd)") +
