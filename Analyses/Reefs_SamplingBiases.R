@@ -217,7 +217,7 @@ R2.richness.x2 <- c(summary(effort_richness_model.collsub.x2)$r.squared,
 
 
 
-#Diversity AIC tests:
+#Diversity tests:
 effort_diversity_model.collsub.x1 <- lm(HedgesG_H~poly(sampling_difference_colls,1),
                                         data=subset(compare_subsampling, method=='5 collections per formation'))
 effort_diversity_model.occssub.x1 <- lm(HedgesG_H~poly(sampling_difference_colls,1),
@@ -237,7 +237,7 @@ R2.diversity.x2 <- c(summary(effort_diversity_model.collsub.x2)$r.squared,
                      summary(effort_diversity_model.occssub.x2)$r.squared,
                      summary(effort_diversity_model.nosub.x2)$r.squared)
 
-#Dominance AIC tests: 
+#Dominance tests: 
 effort_dominance_model.collsub.x1 <- lm(HedgesG_Dominance~poly(sampling_difference_colls,1),
                                        data=subset(compare_subsampling, method=='5 collections per formation'))
 effort_dominance_model.occssub.x1 <- lm(HedgesG_Dominance~poly(sampling_difference_colls,1),
@@ -266,6 +266,7 @@ R2_summary <- data.frame(row.names=c('5 collections/formation',
                          R2.dominance.x1, R2.dominance.x2)
 print(R2_summary)
 
+#for y~x2
 R2_text <- as.data.frame(matrix(NA, nrow=9, ncol=3))
 colnames(R2_text) <- c('measure', 'method', 'r2')
 R2_text$measure <- c(rep('Richness',3),rep("Shannon's Diversity", 3),rep("Simpson's Dominance",3))
@@ -280,19 +281,9 @@ R2_text$r2 <- c(sprintf("%.3f", R2_summary['5 collections/formation', 'R2.richne
                 sprintf("%.3f", R2_summary['20 occurrences/formation', 'R2.dominance.x2']),
                 sprintf("%.3f", R2_summary['no formation subsampling', 'R2.dominance.x2'])
 )
-R2_text$AIC <- c(sprintf("%.1f", AIC_summary['5 collections/formation','AIC.richness.x2.AIC']),
-                 sprintf("%.1f", AIC_summary['20 occurrences/formation','AIC.richness.x2.AIC']),
-                 sprintf("%.1f", AIC_summary['no formation subsampling','AIC.richness.x2.AIC']),
-                 sprintf("%.1f", AIC_summary['5 collections/formation','AIC.diversity.x2.AIC']),
-                 sprintf("%.1f", AIC_summary['20 occurrences/formation','AIC.diversity.x2.AIC']),
-                 sprintf("%.1f", AIC_summary['no formation subsampling','AIC.diversity.x2.AIC']),
-                 sprintf("%.1f", AIC_summary['5 collections/formation','AIC.dominance.x2.AIC']),
-                 sprintf("%.1f", AIC_summary['20 occurrences/formation','AIC.dominance.x2.AIC']),
-                 sprintf("%.1f", AIC_summary['no formation subsampling','AIC.dominance.x2.AIC'])
-)
 print(R2_text)
 
-#1bii - make figures 
+
 effort_richness <- ggplot(data=subset(compare_subsampling, !(is.na(HedgesG_genrich)))) +
   geom_smooth(aes(x=sampling_difference_colls, y=HedgesG_genrich,
                   fill=method, color=method), 
@@ -314,8 +305,6 @@ effort_richness <- ggplot(data=subset(compare_subsampling, !(is.na(HedgesG_genri
     legend.title=element_blank(),
     axis.title.x=element_blank(),
     legend.position='none')
-effort_richness
-
 
 
 effort_diversity <- ggplot(data=subset(compare_subsampling, !(is.na(HedgesG_H)))) +
@@ -340,7 +329,7 @@ effort_diversity <- ggplot(data=subset(compare_subsampling, !(is.na(HedgesG_H)))
     legend.title=element_blank(),
     axis.title.x=element_blank(),
     legend.position='none')
-effort_diversity
+
 
 effort_dominance <- ggplot(data=subset(compare_subsampling, !(is.na(HedgesG_Dominance)))) +
   geom_smooth(aes(x=sampling_difference_colls, y=HedgesG_Dominance,
@@ -363,8 +352,92 @@ effort_dominance <- ggplot(data=subset(compare_subsampling, !(is.na(HedgesG_Domi
     strip.text=element_text(color='white'),
     legend.title=element_blank(),
     legend.position='none')
-effort_dominance
 
-effort_comps <- ggarrange2(effort_richness, effort_diversity, effort_dominance,
+
+effort_comps <- ggarrange2(effort_richness, effort_diversity,
                           ncol=1)
 
+#for y~x:
+R2_text <- as.data.frame(matrix(NA, nrow=9, ncol=3))
+colnames(R2_text) <- c('measure', 'method', 'r2')
+R2_text$measure <- c(rep('Richness',3),rep("Shannon's Diversity", 3),rep("Simpson's Dominance",3))
+R2_text$method <- rep(unique(compare_subsampling$method),3)
+R2_text$r2 <- c(sprintf("%.3f", R2_summary['5 collections/formation', 'R2.richness.x1']),
+                sprintf("%.3f", R2_summary['20 occurrences/formation', 'R2.richness.x1']),
+                sprintf("%.3f", R2_summary['no formation subsampling', 'R2.richness.x1']),
+                sprintf("%.3f", R2_summary['5 collections/formation', 'R2.diversity.x1']),
+                sprintf("%.3f", R2_summary['20 occurrences/formation', 'R2.diversity.x1']),
+                sprintf("%.3f", R2_summary['no formation subsampling', 'R2.diversity.x1']),
+                sprintf("%.3f", R2_summary['5 collections/formation', 'R2.dominance.x1']),
+                sprintf("%.3f", R2_summary['20 occurrences/formation', 'R2.dominance.x1']),
+                sprintf("%.3f", R2_summary['no formation subsampling', 'R2.dominance.x1'])
+)
+
+print(R2_text)
+
+effort_richness <- ggplot(data=subset(compare_subsampling, !(is.na(HedgesG_genrich)))) +
+  geom_smooth(aes(x=sampling_difference_colls, y=HedgesG_genrich,
+                  fill=method, color=method), 
+              method='lm') +
+  geom_point(aes(x=sampling_difference_colls, y=HedgesG_genrich, 
+                 fill=method, shape=method), size=2, colour='black') +
+  geom_text(data=subset(R2_text, measure=='Richness'), x=-5, y=1.5, hjust=0, aes(label=paste0("R^2~'='~", r2)), parse = TRUE) +
+  facet_wrap(vars(method)) +
+  scale_fill_manual(values=compare.cols) +
+  scale_shape_manual(values=compare.shapes) +
+  scale_color_manual(values=compare.cols) +
+  scale_y_continuous(limits=c(-0.7,1.5), "Hedges' g") +
+  scale_x_continuous("avg. n. collections per EE formations — avg. n. collections per non EE formations") +
+  ggtitle("Sampling Effort versus Richness Effect") +
+  theme_classic() +
+  theme(
+    strip.text=element_text(face='bold'),
+    legend.title=element_blank(),
+    axis.title.x=element_blank(),
+    legend.position='none')
+
+effort_diversity <- ggplot(data=subset(compare_subsampling, !(is.na(HedgesG_H)))) +
+  geom_smooth(aes(x=sampling_difference_colls, y=HedgesG_H,
+                  fill=method, color=method), 
+              method='lm') +
+  geom_point(aes(x=sampling_difference_colls, y=HedgesG_H, 
+                 fill=method, shape=method), size=2, colour='black') +
+  geom_text(data=subset(R2_text, measure=="Shannon's Diversity"), x=-5, y=1.8, hjust=0, aes(label=paste0("R^2~'='~", r2)), parse = TRUE) +
+  facet_wrap(vars(method)) +
+  scale_fill_manual(values=compare.cols) +
+  scale_shape_manual(values=compare.shapes) +
+  scale_color_manual(values=compare.cols) +
+  scale_y_continuous(limits=c(-0.5,1.8), "Hedges' g") +
+  scale_x_continuous("avg. n. collections per EE formations — avg. n. collections per non EE formations") +
+  ggtitle("Sampling Effort versus Shannon's Diversity Effect") +
+  theme_classic() +
+  theme(
+    strip.background = element_blank(),
+    strip.text=element_text(color='white'),
+    legend.title=element_blank(),
+    axis.title.x=element_blank(),
+    legend.position='none')
+
+effort_dominance <- ggplot(data=subset(compare_subsampling, !(is.na(HedgesG_Dominance)))) +
+  geom_smooth(aes(x=sampling_difference_colls, y=HedgesG_Dominance,
+                  fill=method, color=method), 
+              method='lm') +
+  geom_point(aes(x=sampling_difference_colls, y=HedgesG_Dominance, 
+                 fill=method, shape=method), size=2, colour='black') +
+  geom_text(data=subset(R2_text, measure=="Simpson's Dominance"), x=-5, y=3, hjust=0, aes(label=paste0("R^2~'='~", r2)), parse = TRUE) +
+  facet_wrap(vars(method)) +
+  scale_fill_manual(values=compare.cols) +
+  scale_shape_manual(values=compare.shapes) +
+  scale_color_manual(values=compare.cols) +
+  scale_y_continuous(limits=c(-0.8,3.2), "Hedges' g") +
+  scale_x_continuous("avg. n. collections per EE formations — avg. n. collections per non EE formations") +
+  ggtitle("Sampling Effort versus Simpson's Dominance Effect") +
+  theme_classic() +
+  theme(
+    strip.background = element_blank(),
+    strip.text=element_text(color='white'),
+    legend.title=element_blank(),
+    legend.position='none')
+
+effort_comps <- ggarrange2(effort_richness, effort_diversity,
+                           ncol=1)
