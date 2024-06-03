@@ -32,6 +32,12 @@ There are two types of <kbd>[Analyses](https://github.com/atcribb/Ecosystem-Engi
 * ``Figures_Reef_EffectSizes.R`` - plotting outputs for main text figures comparing biodiversity measurements per formation with and without reef-builders in each stage and effect size of the presence of reef-builders in each stage.
 
 # Change log
+### 1-3 June 2024
+```diff
++ Update bioturbation dataset to include a small number of infauna which were not previously included 
++ Update sampling bias analysis scripts to plot but linear and polynomial regressions more easily 
+```
+
 ### 30 May 2024
 ```diff
 + Minor edits to plotting aesthetics, and fixing issue where effect sizes strength was not being assessed based on uncertainty bounds
